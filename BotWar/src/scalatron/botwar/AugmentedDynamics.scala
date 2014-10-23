@@ -127,7 +127,8 @@ case object AugmentedDynamics extends ((State, Random, Iterable[(Entity.Id, Iter
 
         case spawn: Command.Spawn => // "Spawn(dx=<int>,dy=<int>,name=<int>,energy=<int>)"
           val ratio = state.config.permanent.cpuRatio
-          val refCpu: Long = {
+
+          def refCpu: Long = try {
             board.botThatIsMasterOfPlayer("Reference") match {
               case Some(b) =>
                 b.variety match {
@@ -136,27 +137,40 @@ case object AugmentedDynamics extends ((State, Random, Iterable[(Entity.Id, Iter
                 }
               case _ => Long.MaxValue
             }
+          } catch {
+            case e: Exception => e.printStackTrace()
+              throw e
           }
 
-          def findMaster(player: Bot.Player): Bot.Player = {
-            if (player.isMaster) player
+
+          def findMaster(b: Bot): Bot.Player = try {
+            val found = if (b.isMaster) b
             else {
-              val p = board.botThatIsMasterOfPlayer(player.name).map {
-                b => b.variety.asInstanceOf[Bot.Player]
-              }.get
-              if (p.isMaster) p
-              else findMaster(p)
+              board.siblingsOfBot(b).filter(_.isMaster).head
             }
+            found.variety match {
+              case p: Bot.Player => p
+              case _ => throw new RuntimeException("Master not a player")
+            }
+          } catch {
+            case e: Exception => e.printStackTrace()
+              throw e
           }
 
-          def toMuchCpu(player: Bot.Player) = {
-            if (player.name == "Reference") false
-            else refCpu * ratio < player.cpuTime
+          def toMuchCpu(player: Bot.Player) = try {
+            val x = if (player.name == "Reference") false
+            else (refCpu.doubleValue / state.time) * ratio < player.cpuTime / state.time
+            if(x) println(s"player ${player.name} : ${player.cpuTime.doubleValue / state.time / 1e6} ms Reference: ${refCpu.doubleValue / state.time / 1e6} ms")
+            x
+          } catch {
+            case e: Exception => e.printStackTrace()
+              throw e
           }
+
           thisVariety match {
 
-            case thisPlayer: Bot.Player if toMuchCpu(findMaster(thisPlayer)) =>
-                            println(s"player ${thisPlayer.name} : ${thisPlayer.cpuTime.doubleValue / state.time / 1e6} ms Reference: ${refCpu.doubleValue / state.time / 1e6} ms")
+            case thisPlayer: Bot.Player if toMuchCpu(findMaster(thisBot)) =>
+//              println(s"player ${thisPlayer.name} : ${thisPlayer.cpuTime.doubleValue / state.time / 1e6} ms Reference: ${refCpu.doubleValue / state.time / 1e6} ms")
               board
             case thisPlayer: Bot.Player =>
               val energy = spawn.map.get(Protocol.PropertyName.Energy).map(_.toInt).getOrElse(100)
