@@ -133,9 +133,9 @@ case object AugmentedDynamics extends ((State, Random, Iterable[(Entity.Id, Iter
               case Some(b) =>
                 b.variety match {
                   case p: Bot.Player => p.cpuTime
-                  case _ => Long.MaxValue
+                  case _ => 0L
                 }
-              case _ => Long.MaxValue
+              case _ => 0L
             }
           } catch {
             case e: Exception => e.printStackTrace()
@@ -159,8 +159,8 @@ case object AugmentedDynamics extends ((State, Random, Iterable[(Entity.Id, Iter
 
           def toMuchCpu(player: Bot.Player) = try {
             val x = if (player.name == "Reference") false
-            else (refCpu.doubleValue / state.time) * ratio < player.cpuTime / state.time
-            if(x) println(s"player ${player.name} : ${player.cpuTime.doubleValue / state.time / 1e6} ms Reference: ${refCpu.doubleValue / state.time / 1e6} ms")
+            else refCpu * ratio < player.cpuTime
+//            if(x) println(s"player ${player.name} : ${player.cpuTime.doubleValue / 1e6} ms Reference: ${refCpu.doubleValue / 1e6} ms")
             x
           } catch {
             case e: Exception => e.printStackTrace()
@@ -170,7 +170,6 @@ case object AugmentedDynamics extends ((State, Random, Iterable[(Entity.Id, Iter
           thisVariety match {
 
             case thisPlayer: Bot.Player if toMuchCpu(findMaster(thisBot)) =>
-//              println(s"player ${thisPlayer.name} : ${thisPlayer.cpuTime.doubleValue / state.time / 1e6} ms Reference: ${refCpu.doubleValue / state.time / 1e6} ms")
               board
             case thisPlayer: Bot.Player =>
               val energy = spawn.map.get(Protocol.PropertyName.Energy).map(_.toInt).getOrElse(100)

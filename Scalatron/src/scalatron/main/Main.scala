@@ -73,7 +73,7 @@ object Main {
         "rounds <int>" -> "run this many tournament rounds, then exit (default: unlimited)",
         "headless yes|no" -> "run without visual output (default: no)",
         "verbose yes|no " -> "print verbose output (default: no)",
-        "cpuTime" -> "cpu time ratio compared to Reference"
+        "cpuRatio" -> "cpu time ratio compared to Reference"
     )
 }
 
