@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet
 import rest.RestApplication
 import scalatron.core.Scalatron
 import com.sun.jersey.spi.container.servlet.ServletContainer
-import servelets.{AdminServlet, UserServlet, HomePageServlet, WebContext, GitServlet}
+import scalatron.webServer.servelets._
 import akka.actor.ActorSystem
 
 
@@ -81,6 +81,7 @@ object WebServer {
         val context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/")
         context.addServlet(holder(HomePageServlet(webCtx)), "/*")
+        context.addServlet(new ServletHolder("ws-events", new EventServlet(actorSystem)), "/ws/*")
         context.addServlet(holder(UserServlet(webCtx)), "/user/*")
         context.addServlet(holder(AdminServlet(webCtx)), "/admin/*")
         context.addServlet(holder(GitServlet(webCtx)), "/git/*")
@@ -125,6 +126,7 @@ class WebServer(server: jetty.server.Server, verbose: Boolean) {
         if (verbose) println("Starting browser front-end...")
         try {
             server.start()
+
         } catch {
             case t: Throwable => System.err.println("error: failed to start browser front-end: " + t)
         }

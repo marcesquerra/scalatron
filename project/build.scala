@@ -64,7 +64,9 @@ object build extends Build {
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-compiler" % "2.11.2",
         "com.typesafe.akka" %% "akka-actor" % "2.3.5",
-        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
+//        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
+        "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
+        "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",
         "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.1",
         "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1",

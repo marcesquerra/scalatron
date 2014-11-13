@@ -3,7 +3,7 @@
   */
 package scalatron.botwar
 
-import renderer.Renderer
+import scalatron.botwar.renderer.{WSActor, Renderer}
 import scala.concurrent.ExecutionContext
 import scalatron.botwar.BotWarSimulation.SimState
 import java.awt.event.{WindowEvent, WindowAdapter, KeyEvent, KeyListener}
@@ -31,6 +31,8 @@ case object Game extends scalatron.core.Game
         // create a renderer; we'll use it to paint the display
         val renderer = Renderer(permanentConfig, scalatron)
 
+        val wsActor = scalatron.actorSystem.actorOf(WSActor.props, "drawing")
+        println(s"instance: $wsActor")
         // add a keyboard listener to allow the user to configure the app while it runs
         val keyListener = new KeyListener {
             def keyTyped(e: KeyEvent) {}
@@ -60,6 +62,7 @@ case object Game extends scalatron.core.Game
             scalatron.postStepCallback(state)
 
             val executionContextForTrustedCode = scalatron.actorSystem.dispatcher
+
             renderer.draw(display.renderTarget, state.gameState)(executionContextForTrustedCode)
 
             // enforce maxFPS (max frames per second) by putting this thread to sleep if appropriate

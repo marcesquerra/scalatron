@@ -13,6 +13,7 @@ import scalatron.core.{ScalatronInward, PermanentConfig}
 
 
 object Renderer {
+
     /** A table of high-contrast colors that we'll use to assemble player color combinations. */
     val PrimaryColorTable = Array(
         Color.cyan,
@@ -115,11 +116,20 @@ case class Renderer(permanentConfig: PermanentConfig, scalatron: ScalatronInward
         val renderJobs = newRenderJob :: pendingRenderJobs
 
         // start all render jobs concurrently
-        val futureList = Future.traverse(renderJobs)(job => Future { job.renderStage(job.sourceAndTarget) })
+        val futureList = Future.traverse(renderJobs)(job => Future {
+            job.renderStage(job.sourceAndTarget)
+        })
 
         // wait until all render jobs finish; each returns an Option with a new render job
         val resultList = Await.result(futureList, Duration.Inf)     // no timeout; maybe in the future
+        val a = scalatron.actorSystem.actorSelection("/user/drawing")
 
+        resultList.collect{
+            case Right(rc) => rc
+        }.foreach {
+            case rc =>
+                a ! WSActor.Image(rc.image)
+        }
         // now eliminate all completed jobs and recycle their render contexts
         val (remainingJobs, recyclableContexts) = resultList.partition(_.isLeft)
         pendingRenderJobs = remainingJobs.map(_.left.get)
