@@ -5,6 +5,11 @@ package scalatron.botwar.renderer
 
 import java.awt.{Graphics2D, Color, Font}
 import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import javax.imageio.ImageIO
+
+import akka.actor.ActorSelection
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64
 
 import RenderUtil.makeTransparent
 import RenderContext.minBottomPanelHeight
@@ -21,8 +26,9 @@ object RenderContext {
     val minBottomPanelHeight = 26
     val minRightPanelWidth = 180
 }
-case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int)
+case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int, a: ActorSelection)
 {
+    println("created RenderContext")
     def isSuitableFor(renderTarget: RenderTarget, state: State) =
         renderTarget.canvasSizeX == canvasSizeX &&
             renderTarget.canvasSizeY == canvasSizeY &&
@@ -53,8 +59,16 @@ case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int)
     val image = new BufferedImage(canvasSizeX, canvasSizeY, BufferedImage.TYPE_INT_ARGB)
     private val graphics = image.getGraphics // indicates the currently active graphics context for drawing
 
+    val baos = new ByteArrayOutputStream()
+
     def flipBuffer(frameGraphics: Graphics2D) {
         frameGraphics.drawImage(image, 0, 0, null)
+        baos.reset()
+        ImageIO.write( image, "png", baos )
+        baos.flush()
+        val bytes = baos.toByteArray
+        val header = "%09d".format(Base64.encode(bytes).length).getBytes
+        a ! WSActor.Image(header, bytes)
     }
 
     def setColor(color: Color) {graphics.setColor(color)}

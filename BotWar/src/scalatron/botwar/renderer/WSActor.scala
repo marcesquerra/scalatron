@@ -1,30 +1,33 @@
 package scalatron.botwar.renderer
 
-import java.awt.image.BufferedImage
-
-import akka.actor.{Props, ActorRef, Actor}
-
+import akka.actor.{Actor, ActorRef, Props, Terminated}
 
 
 object WSActor {
 
   case object Register
-  case class Image(img: BufferedImage)
+
+  case class Image(header: Array[Byte], img: Array[Byte])
 
   def props = Props[WSActor]
 }
 
 class WSActor extends Actor {
+
   import scalatron.botwar.renderer.WSActor._
 
+  var count = 0L
   val participants = collection.mutable.Set[ActorRef]()
 
   override def receive: Receive = {
     case Register =>
-      println(s"register: ${sender()}")
       participants += sender()
-    case i @ Image(img) =>
-      println(s"image!!!: $participants")
+      context.watch(sender())
+
+    case Terminated(_) => participants -= sender()
+
+    case i: Image =>
+      count += 1
       participants.foreach(_ ! i)
   }
 

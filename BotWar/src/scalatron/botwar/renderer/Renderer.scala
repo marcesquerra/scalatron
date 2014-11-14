@@ -101,10 +101,12 @@ case class Renderer(permanentConfig: PermanentConfig, scalatron: ScalatronInward
         // eliminate no-longer-suitable render contexts before recycling them
         availableRenderContexts = availableRenderContexts.filter(_.isSuitableFor(renderTarget, state))
 
+        val a = scalatron.actorSystem.actorSelection("/user/drawing")
+
         // recycle or create a render context for the job representing the new first pipeline state
         val renderContext =
             if(availableRenderContexts.isEmpty) {
-                RenderContext(state.config.boardParams.size, renderTarget.canvasSizeX, renderTarget.canvasSizeY)
+                RenderContext(state.config.boardParams.size, renderTarget.canvasSizeX, renderTarget.canvasSizeY, a)
             } else {
                 val contextToRecycle = availableRenderContexts.head
                 availableRenderContexts = availableRenderContexts.tail // remove it from the list of available ones
@@ -122,14 +124,14 @@ case class Renderer(permanentConfig: PermanentConfig, scalatron: ScalatronInward
 
         // wait until all render jobs finish; each returns an Option with a new render job
         val resultList = Await.result(futureList, Duration.Inf)     // no timeout; maybe in the future
-        val a = scalatron.actorSystem.actorSelection("/user/drawing")
 
-        resultList.collect{
-            case Right(rc) => rc
-        }.foreach {
-            case rc =>
-                a ! WSActor.Image(rc.image)
-        }
+
+//        resultList.collect{
+//            case Right(rc) => rc
+//        }.foreach {
+//            case rc =>
+//                a ! WSActor.Image(rc.image)
+//        }
         // now eliminate all completed jobs and recycle their render contexts
         val (remainingJobs, recyclableContexts) = resultList.partition(_.isLeft)
         pendingRenderJobs = remainingJobs.map(_.left.get)
