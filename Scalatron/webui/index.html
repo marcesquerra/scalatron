@@ -24,12 +24,11 @@
 
 <div id="output" style="display:none">output</div>
 <canvas id="canvas1" width="750" height="600" style="border:1px solid #000000;"></canvas>
-<!--<canvas id="canvas2" width="750" height="600" style="border:1px solid #000000;"></canvas>-->
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
 <script>
-    var width = 750;
-    var height = 600;
+    var width = 850;
+    var height = 700;
     var blob;
     var readSize = 0;
     var started = false;
@@ -37,12 +36,10 @@
     var image64 = "";
     var c1 = document.getElementById("canvas1");
     var ctx1 = c1.getContext("2d");
-    //    var c2=document.getElementById("canvas2");
-    //    var ctx2=c2.getContext("2d");
     var count = 0;
 
 
-    websocket = new WebSocket("ws://localhost:8080/ws/", "binary");
+    websocket = new WebSocket("ws://" + location.host + "/ws/");
     websocket.binaryType = "arraybuffer";
     websocket.onopen = function (evt) {
         onOpen(evt)
@@ -77,7 +74,7 @@
                 image64 += r.substring(9);
                 readSize += parseInt(r.length - 9);
             }
-            console.log("imageSize=" + imageSize);
+            //console.log("imageSize=" + imageSize);
             started = true;
         } else {
             //$('#output').html(r.length);
@@ -85,15 +82,14 @@
             image64 += r;
             readSize += parseInt(r.length);
         }
-        console.log("readSize=" + readSize + ", r.length=" + r.length);
+        //console.log("readSize=" + readSize + ", r.length=" + r.length);
         if (readSize == imageSize) {
-            count++;
             img = new Image();
             img.onload = function () {
                 ctx1.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
                 websocket.send("hello");
             }
-            console.log("loaded image, length=" + image64.length);
+//            console.log("loaded image, length=" + image64.length);
             img.src = 'data:image/jpg;base64,' + image64;
 
             readSize = 0;
@@ -102,7 +98,7 @@
         }
     }
 
-    function onerror(evt) {
+    function onError(evt) {
         console.log("error: " + evt);
     }
 </script>

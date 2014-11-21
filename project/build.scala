@@ -36,13 +36,14 @@ object build extends Build {
 
   lazy val src = Seq(
     scalaSource in Compile <<= baseDirectory / "src",
-    scalaSource in Test <<= baseDirectory / "test"
+    scalaSource in Test <<= baseDirectory / "test",
+    resourceDirectory in Compile <<= baseDirectory / "resources"
   )
 
   lazy val core = Project("ScalatronCore", file("ScalatronCore"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.3.5"
+        "com.typesafe.akka" %% "akka-actor" % "2.3.7"
       )
     ) ++ Seq(
       jarName in assembly := "ScalatronCore.jar" // , logLevel in assembly := Level.Debug
@@ -52,7 +53,7 @@ object build extends Build {
   lazy val botwar = Project("BotWar", file("BotWar"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.3.5"
+        "com.typesafe.akka" %% "akka-actor" % "2.3.7"
       )
     ) ++ Seq(
       jarName in assembly := "BotWar.jar" // , logLevel in assembly := Level.Debug
@@ -62,8 +63,8 @@ object build extends Build {
   lazy val main = Project("Scalatron", file("Scalatron"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "org.scala-lang" % "scala-compiler" % "2.11.2",
-        "com.typesafe.akka" %% "akka-actor" % "2.3.5",
+        "org.scala-lang" % "scala-compiler" % "2.11.4",
+        "com.typesafe.akka" %% "akka-actor" % "2.3.7",
 //        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",

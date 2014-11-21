@@ -4,7 +4,7 @@
 package scalatron.botwar.renderer
 
 import java.awt.{Graphics2D, Color, Font}
-import java.awt.image.BufferedImage
+import java.awt.image.{WritableRaster, ColorModel, BufferedImage}
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
@@ -23,134 +23,157 @@ import scalatron.botwar.{State, XY}
   * manage the image buffer used for off-screen drawing.
   */
 object RenderContext {
-    val minBottomPanelHeight = 26
-    val minRightPanelWidth = 180
+  val minBottomPanelHeight = 26
+  val minRightPanelWidth = 180
 }
-case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int, a: ActorSelection)
-{
-    println("created RenderContext")
-    def isSuitableFor(renderTarget: RenderTarget, state: State) =
-        renderTarget.canvasSizeX == canvasSizeX &&
-            renderTarget.canvasSizeY == canvasSizeY &&
-            state.config.boardParams.size == boardSize
 
-    val maxFieldSizeX = canvasSizeX - minRightPanelWidth // e.g. 1024-150 = 874
-    val maxFieldSizeY = canvasSizeY - minBottomPanelHeight // e.g. 768-26 = 742
-    val maxPixelsPerCellX = ( maxFieldSizeX / boardSize.x ).intValue // e.g. 874/109 = 8.02 => 8
-    val maxPixelsPerCellY = ( maxFieldSizeY / boardSize.y ).intValue // e.g. 742/92 = 8.07 => 8
+case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int) {
+  println("created RenderContext")
 
-    val pixelsPerCell = maxPixelsPerCellX.min(maxPixelsPerCellY).max(3) // e.g. 8
+  def isSuitableFor(renderTarget: RenderTarget, state: State) =
+    renderTarget.canvasSizeX == canvasSizeX &&
+      renderTarget.canvasSizeY == canvasSizeY &&
+      state.config.boardParams.size == boardSize
 
-    val halfPixelsPerCell = pixelsPerCell / 2
-    val doublePixelsPerCell = pixelsPerCell * 2
+  val maxFieldSizeX = canvasSizeX - minRightPanelWidth
+  // e.g. 1024-150 = 874
+  val maxFieldSizeY = canvasSizeY - minBottomPanelHeight
+  // e.g. 768-26 = 742
+  val maxPixelsPerCellX = (maxFieldSizeX / boardSize.x).intValue
+  // e.g. 874/109 = 8.02 => 8
+  val maxPixelsPerCellY = (maxFieldSizeY / boardSize.y).intValue // e.g. 742/92 = 8.07 => 8
 
-    def leftTop(pos: XY) = (pos.x * pixelsPerCell, pos.y * pixelsPerCell)
+  val pixelsPerCell = maxPixelsPerCellX.min(maxPixelsPerCellY).max(3) // e.g. 8
 
-    def center(pos: XY) = (pos.x * pixelsPerCell + halfPixelsPerCell, pos.y * pixelsPerCell + halfPixelsPerCell)
+  val halfPixelsPerCell = pixelsPerCell / 2
+  val doublePixelsPerCell = pixelsPerCell * 2
 
-    val fieldSizeX = pixelsPerCell * boardSize.x
-    val fieldSizeY = pixelsPerCell * boardSize.y
-    val fieldCenterX = fieldSizeX / 2
-    val fieldCenterY = fieldSizeY / 2
+  def leftTop(pos: XY) = (pos.x * pixelsPerCell, pos.y * pixelsPerCell)
 
-    val rightPanelWidth = canvasSizeX - fieldSizeX
-    val bottomPanelHeight = canvasSizeY - fieldSizeY
+  def center(pos: XY) = (pos.x * pixelsPerCell + halfPixelsPerCell, pos.y * pixelsPerCell + halfPixelsPerCell)
 
-    val image = new BufferedImage(canvasSizeX, canvasSizeY, BufferedImage.TYPE_INT_ARGB)
-    private val graphics = image.getGraphics // indicates the currently active graphics context for drawing
+  val fieldSizeX = pixelsPerCell * boardSize.x
+  val fieldSizeY = pixelsPerCell * boardSize.y
+  val fieldCenterX = fieldSizeX / 2
+  val fieldCenterY = fieldSizeY / 2
 
-    val baos = new ByteArrayOutputStream()
+  val rightPanelWidth = canvasSizeX - fieldSizeX
+  val bottomPanelHeight = canvasSizeY - fieldSizeY
 
-    def flipBuffer(frameGraphics: Graphics2D) {
-        frameGraphics.drawImage(image, 0, 0, null)
-        baos.reset()
-        ImageIO.write( image, "png", baos )
-        baos.flush()
-        val bytes = baos.toByteArray
-        val header = "%09d".format(Base64.encode(bytes).length).getBytes
-        a ! WSActor.Image(header, bytes)
-    }
+  val image = new BufferedImage(canvasSizeX, canvasSizeY, BufferedImage.TYPE_INT_ARGB)
+  private val graphics = image.getGraphics // indicates the currently active graphics context for drawing
 
-    def setColor(color: Color) {graphics.setColor(color)}
+  def flipBuffer(frameGraphics: Graphics2D) {
+    frameGraphics.drawImage(image, 0, 0, null)
+  }
 
-    def setFont(font: Font) {graphics.setFont(font)}
+  def deepCopy() = {
+    val cm = image.getColorModel();
+    val isAlphaPremultiplied = cm.isAlphaPremultiplied();
+    val raster = image.copyData(null);
+    new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+  }
 
-    def fillRect(x: Int, y: Int, width: Int, height: Int) {graphics.fillRect(x, y, width, height)}
+  def setColor(color: Color) {
+    graphics.setColor(color)
+  }
 
-    def drawRect(x: Int, y: Int, width: Int, height: Int) {graphics.drawRect(x, y, width, height)}
+  def setFont(font: Font) {
+    graphics.setFont(font)
+  }
 
-    def fillOval(x: Int, y: Int, width: Int, height: Int) {graphics.fillOval(x, y, width, height)}
+  def fillRect(x: Int, y: Int, width: Int, height: Int) {
+    graphics.fillRect(x, y, width, height)
+  }
 
-    def drawOval(x: Int, y: Int, width: Int, height: Int) {graphics.drawOval(x, y, width, height)}
+  def drawRect(x: Int, y: Int, width: Int, height: Int) {
+    graphics.drawRect(x, y, width, height)
+  }
 
-    def drawLine(x1: Int, y1: Int, x2: Int, y2: Int) {graphics.drawLine(x1, y1, x2, y2)}
+  def fillOval(x: Int, y: Int, width: Int, height: Int) {
+    graphics.fillOval(x, y, width, height)
+  }
 
-    def drawString(s: String, x: Int, y: Int) {graphics.drawString(s, x, y)}
+  def drawOval(x: Int, y: Int, width: Int, height: Int) {
+    graphics.drawOval(x, y, width, height)
+  }
 
-    def fillCenteredCircle(centerX: Int, centerY: Int, radius: Int) {fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2)}
+  def drawLine(x1: Int, y1: Int, x2: Int, y2: Int) {
+    graphics.drawLine(x1, y1, x2, y2)
+  }
 
-    def drawCenteredCircle(centerX: Int, centerY: Int, radius: Int) {drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2)}
+  def drawString(s: String, x: Int, y: Int) {
+    graphics.drawString(s, x, y)
+  }
 
+  def fillCenteredCircle(centerX: Int, centerY: Int, radius: Int) {
+    fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2)
+  }
 
-    def drawBeveledRect(left: Int, top: Int, width: Int, height: Int, colorTriple: ColorTriple) {
-        val right = left + width - 1
-        val bottom = top + height - 1
-
-        setColor(colorTriple.plain)
-        fillRect(left + 1, top + 1, width - 2, height - 2)
-
-        setColor(colorTriple.bright)
-        drawLine(left, top, left, bottom - 1) // left
-        drawLine(left + 1, top, right - 1, top) // top
-
-        setColor(colorTriple.dark)
-        drawLine(left + 1, bottom, right, bottom) // bottom
-        drawLine(right, top + 1, right, bottom - 1) // right
-    }
-
-    def drawEmbossedRect(left: Int, top: Int, width: Int, height: Int, colorTriple: ColorTriple) {
-        val right = left + width - 1
-        val bottom = top + height - 1
-
-        setColor(colorTriple.plain)
-        fillRect(left + 1, top + 1, width - 2, height - 2)
-
-        setColor(colorTriple.dark)
-        drawLine(left, top, left, bottom - 1) // left
-        drawLine(left + 1, top, right - 1, top) // top
-
-        setColor(colorTriple.bright)
-        drawLine(left + 1, bottom, right, bottom) // bottom
-        drawLine(right, top + 1, right, bottom - 1) // right
-    }
-
-    def drawEmbossedText(text: String, left: Int, top: Int, colorTriple: ColorTriple, alpha: Int) {
-        setColor(makeTransparent(colorTriple.bright, alpha));
-        drawString(text, left - 1, top - 1)
-        setColor(makeTransparent(colorTriple.dark, alpha));
-        drawString(text, left + 1, top + 1)
-        setColor(makeTransparent(colorTriple.plain, alpha));
-        drawString(text, left, top)
-    }
+  def drawCenteredCircle(centerX: Int, centerY: Int, radius: Int) {
+    drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2)
+  }
 
 
-    def drawMaster(left: Int, top: Int, playerColorPair: (ColorTriple, ColorTriple), rankAndQuartile: (Int, Int)) {
-        val centerX = left + halfPixelsPerCell
-        val centerY = top + halfPixelsPerCell
+  def drawBeveledRect(left: Int, top: Int, width: Int, height: Int, colorTriple: ColorTriple) {
+    val right = left + width - 1
+    val bottom = top + height - 1
 
-        // double-sized outer ring
-        val outerColor = playerColorPair._1
-        setColor(outerColor.bright)
-        fillCenteredCircle(centerX - 1, centerY - 1, pixelsPerCell)
-        setColor(outerColor.dark)
-        fillCenteredCircle(centerX + 1, centerY + 1, pixelsPerCell)
-        setColor(outerColor.plain)
-        fillCenteredCircle(centerX, centerY, pixelsPerCell)
+    setColor(colorTriple.plain)
+    fillRect(left + 1, top + 1, width - 2, height - 2)
 
-        // cell-sized inner square
-        val innerColor = playerColorPair._2
-        drawBeveledRect(left, top, pixelsPerCell, pixelsPerCell, innerColor)
-    }
+    setColor(colorTriple.bright)
+    drawLine(left, top, left, bottom - 1) // left
+    drawLine(left + 1, top, right - 1, top) // top
+
+    setColor(colorTriple.dark)
+    drawLine(left + 1, bottom, right, bottom) // bottom
+    drawLine(right, top + 1, right, bottom - 1) // right
+  }
+
+  def drawEmbossedRect(left: Int, top: Int, width: Int, height: Int, colorTriple: ColorTriple) {
+    val right = left + width - 1
+    val bottom = top + height - 1
+
+    setColor(colorTriple.plain)
+    fillRect(left + 1, top + 1, width - 2, height - 2)
+
+    setColor(colorTriple.dark)
+    drawLine(left, top, left, bottom - 1) // left
+    drawLine(left + 1, top, right - 1, top) // top
+
+    setColor(colorTriple.bright)
+    drawLine(left + 1, bottom, right, bottom) // bottom
+    drawLine(right, top + 1, right, bottom - 1) // right
+  }
+
+  def drawEmbossedText(text: String, left: Int, top: Int, colorTriple: ColorTriple, alpha: Int) {
+    setColor(makeTransparent(colorTriple.bright, alpha));
+    drawString(text, left - 1, top - 1)
+    setColor(makeTransparent(colorTriple.dark, alpha));
+    drawString(text, left + 1, top + 1)
+    setColor(makeTransparent(colorTriple.plain, alpha));
+    drawString(text, left, top)
+  }
+
+
+  def drawMaster(left: Int, top: Int, playerColorPair: (ColorTriple, ColorTriple), rankAndQuartile: (Int, Int)) {
+    val centerX = left + halfPixelsPerCell
+    val centerY = top + halfPixelsPerCell
+
+    // double-sized outer ring
+    val outerColor = playerColorPair._1
+    setColor(outerColor.bright)
+    fillCenteredCircle(centerX - 1, centerY - 1, pixelsPerCell)
+    setColor(outerColor.dark)
+    fillCenteredCircle(centerX + 1, centerY + 1, pixelsPerCell)
+    setColor(outerColor.plain)
+    fillCenteredCircle(centerX, centerY, pixelsPerCell)
+
+    // cell-sized inner square
+    val innerColor = playerColorPair._2
+    drawBeveledRect(left, top, pixelsPerCell, pixelsPerCell, innerColor)
+  }
 }
 
 

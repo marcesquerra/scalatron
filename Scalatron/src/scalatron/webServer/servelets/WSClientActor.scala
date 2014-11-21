@@ -8,6 +8,7 @@ import org.eclipse.jetty.websocket.api.{Session, WebSocketAdapter}
 import org.eclipse.jetty.websocket.servlet._
 
 import scalatron.botwar.renderer.WSActor
+import java.io.ByteArrayOutputStream
 
 
 class EventSocket(system: ActorSystem) extends WebSocketAdapter {
@@ -20,12 +21,13 @@ class EventSocket(system: ActorSystem) extends WebSocketAdapter {
   }
 
   override def onWebSocketText(message: String) {
+    wsClientActor ! WSClientActor.Start
     super.onWebSocketText(message);
   }
 
   override def onWebSocketClose(statusCode: Int, reason: String) {
-    super.onWebSocketClose(statusCode, reason)
     wsClientActor ! WSClientActor.Close
+    super.onWebSocketClose(statusCode, reason)
   }
 
   override def onWebSocketError(cause: Throwable) {
@@ -49,6 +51,7 @@ object WSClientActor {
   def props(session: Session) = Props(new WSClientActor(session))
 
   case object Close
+  case object Start
 }
 
 class WSClientActor(session: Session) extends Actor {
@@ -57,23 +60,31 @@ class WSClientActor(session: Session) extends Actor {
   import scalatron.webServer.servelets.WSClientActor._
 
   val identifyId = 1
+  val baos = new ByteArrayOutputStream()
 
   var count = 0
+  var started : Boolean = false
 
   override def preStart(): Unit = {
     context.actorSelection("/user/drawing") ! Identify(1)
   }
 
   override def receive: Receive = {
+
     case ActorIdentity(`identifyId`, Some(ref)) =>
+      println("identified")
       context.watch(ref)
       ref ! Register
       context.become(active(ref))
+
+    case Start =>
+      println("start")
+      started = true
   }
 
   def active(drawing: ActorRef): Receive = {
 
-    case WSActor.Image(header, img) =>
+    case ImageWithHeader(header, img) if started =>
       count += 1
       try {
         session.getRemote.sendBytes(ByteBuffer.wrap(header))
@@ -81,7 +92,9 @@ class WSClientActor(session: Session) extends Actor {
         session.getRemote.sendBytes(ByteBuffer.wrap(Base64.encode(img)))
         session.getRemote.flush()
       } catch {
-        case e: Exception => context.stop(self)
+        case e: Exception =>
+          e.printStackTrace()
+          context.stop(self)
       }
 
     case Close =>
