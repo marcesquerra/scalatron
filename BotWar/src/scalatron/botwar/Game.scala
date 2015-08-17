@@ -3,6 +3,8 @@
   */
 package scalatron.botwar
 
+import akka.routing.RoundRobinPool
+
 import scalatron.botwar.renderer.{WSActor, Renderer}
 import scala.concurrent.ExecutionContext
 import scalatron.botwar.BotWarSimulation.SimState
@@ -30,7 +32,7 @@ case object Game extends scalatron.core.Game {
 
     // create a renderer; we'll use it to paint the display
     val renderer = Renderer(permanentConfig, scalatron)
-    val wsActor = scalatron.actorSystem.actorOf(WSActor.props/*.withDispatcher("my-dispatcher")*/, "drawing")
+    val wsActor = scalatron.actorSystem.actorOf(RoundRobinPool(5).props(WSActor.props), "drawing")
     wsActor ! Render(renderer)
     // add a keyboard listener to allow the user to configure the app while it runs
     val keyListener = new KeyListener {

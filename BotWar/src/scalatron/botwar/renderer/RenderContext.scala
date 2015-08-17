@@ -68,10 +68,10 @@ case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int) {
   }
 
   def deepCopy() = {
-    val cm = image.getColorModel();
-    val isAlphaPremultiplied = cm.isAlphaPremultiplied();
-    val raster = image.copyData(null);
-    new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    val cm = image.getColorModel
+    val isAlphaPremultiplied = cm.isAlphaPremultiplied
+    val raster = image.copyData(null)
+    new BufferedImage(cm, raster, isAlphaPremultiplied, null)
   }
 
   def setColor(color: Color) {
