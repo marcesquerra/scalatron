@@ -60,12 +60,18 @@ object build extends Build {
     )
   ) dependsOn (core)
 
+  val akkaVersion = "2.4.1"
+  val akkaStreamV = "2.0.2"
+
   lazy val main = Project("Scalatron", file("Scalatron"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-compiler" % "2.11.4",
-        "com.typesafe.akka" %% "akka-actor" % "2.3.7",
-//        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
+        "com.typesafe.akka"  %% "akka-http-core-experimental"       % akkaStreamV,
+        "com.typesafe.akka"  %% "akka-http-experimental"            % akkaStreamV,
+        "com.typesafe.akka"  %% "akka-http-testkit-experimental"    % akkaStreamV,
+        "com.typesafe.akka"  %% "akka-actor"                        % akkaVersion,
+        //        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",

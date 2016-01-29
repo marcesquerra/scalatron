@@ -87,6 +87,7 @@ class WSClientActor(session: Session) extends Actor {
     case ImageWithHeader(header, img) if started =>
       count += 1
       try {
+
         session.getRemote.sendBytes(ByteBuffer.wrap(header))
         session.getRemote.flush()
         session.getRemote.sendBytes(ByteBuffer.wrap(Base64.encode(img)))
