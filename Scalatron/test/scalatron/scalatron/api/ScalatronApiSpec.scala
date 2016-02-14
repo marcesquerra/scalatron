@@ -353,7 +353,8 @@ object ScalatronApiTest
                         ( "-plugins" -> pluginBaseDirPath )
                     ),
                     actorSystem,
-                    verbose
+                    verbose,
+                    s => ()
                 )
 
             // start the server, launching the background thread(s) (e.g., compile server)

@@ -6,6 +6,7 @@ package scalatron.botwar
 import scala.concurrent.ExecutionContext
 import scala.util.Random
 import akka.actor.ActorSystem
+import scalatron.core.Simulation.UntypedState
 import scalatron.core.{EntityController, Simulation}
 
 

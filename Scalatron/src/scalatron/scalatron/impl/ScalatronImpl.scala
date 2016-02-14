@@ -29,7 +29,7 @@ object ScalatronImpl {
     * @param verbose if true, use verbose logging
     * @return
     */
-  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean): ScalatronImpl = {
+  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, listener: UntypedState => Unit): ScalatronImpl = {
     // try to locate a base directory for the installation, e.g. '/Scalatron'
     val scalatronInstallationDirectoryPath = detectInstallationDirectory(verbose)
 
@@ -106,7 +106,7 @@ object ScalatronImpl {
       usersBaseDirectoryPath,
       samplesBaseDirectoryPath,
       pluginBaseDirectoryPath,
-      TournamentState.Empty,
+      TournamentState.withListener(listener),
       secureMode,
       verbose
     )
@@ -239,7 +239,6 @@ case class ScalatronImpl(
 
   val userCache = collection.mutable.Map.empty[String, ScalatronUser]
 
-  val auditor = actorSystem.actorOf(Auditor.props())
   def computeUserDirectoryPath(name: String) = usersBaseDirectoryPath + "/" + name
 
 
@@ -259,7 +258,6 @@ case class ScalatronImpl(
   }
 
   def postRoundCallback(finalState: Simulation.UntypedState, result: TournamentRoundResult) {
-    auditor ! result
     tournamentState.updateMostRecentState(finalState)
     tournamentState.addResult(result)
   }
@@ -271,12 +269,6 @@ case class ScalatronImpl(
 
   def start() {
     val compileWorkerCount = 3
-//    val routees = Vector.tabulate[ActorRef](compileWorkerCount)(n => actorSystem.actorOf(Props(new CompileActor(verbose))))
-
-    // using a SmallestMailboxRouter has the advantage of only ever loading (and bloating) a single compile actor
-    // instance when a single user (or a small number of users) is working on the system.
-//    val router = RoundRobinGroup(routees)
-    new RoundRobinPool(compileWorkerCount).props(Props(new CompileActor(verbose)))
     val compileWorkerRouter = actorSystem.actorOf(new RoundRobinPool(compileWorkerCount).props(Props(new CompileActor(verbose))), name = "workerRouter")
     compileWorkerRouterOpt = Some(compileWorkerRouter)
   }

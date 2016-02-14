@@ -81,7 +81,6 @@ object WebServer {
         val context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/")
         context.addServlet(holder(HomePageServlet(webCtx)), "/*")
-        context.addServlet(new ServletHolder("ws-events", new EventServlet(actorSystem)), "/ws/*")
         context.addServlet(holder(UserServlet(webCtx)), "/user/*")
         context.addServlet(holder(AdminServlet(webCtx)), "/admin/*")
         context.addServlet(holder(GitServlet(webCtx)), "/git/*")

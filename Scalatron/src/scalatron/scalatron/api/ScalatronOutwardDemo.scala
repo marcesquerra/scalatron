@@ -45,7 +45,8 @@ object ScalatronOutwardDemo
                         ( "-plugins" -> pluginBaseDirPath )
                     ),
                     actorSystem,
-                    verbose = true
+                    verbose = true,
+                    s => ()
                 )
 
             // start the server, launching the background thread(s) (e.g., compile server)

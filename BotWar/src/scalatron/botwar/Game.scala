@@ -32,8 +32,7 @@ case object Game extends scalatron.core.Game {
 
     // create a renderer; we'll use it to paint the display
     val renderer = Renderer(permanentConfig, scalatron)
-    val wsActor = scalatron.actorSystem.actorOf(RoundRobinPool(5).props(WSActor.props), "drawing")
-    wsActor ! Render(renderer)
+
     // add a keyboard listener to allow the user to configure the app while it runs
     val keyListener = new KeyListener {
       def keyTyped(e: KeyEvent) {}
@@ -67,6 +66,7 @@ case object Game extends scalatron.core.Game {
       scalatron.postStepCallback(state)
 
       val executionContextForTrustedCode = scalatron.actorSystem.dispatcher
+
 
       renderer.draw(display.renderTarget, state.gameState)(executionContextForTrustedCode)
 

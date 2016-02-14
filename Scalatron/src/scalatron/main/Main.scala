@@ -7,7 +7,7 @@ import scalatron.Version
 import scalatron.webServer.WebServer
 import akka.actor._
 import scalatron.scalatron.api.ScalatronOutward
-import scalatron.webServer.akkahttp.Server
+import scalatron.webServer.akkahttp.{RoomView, Server}
 
 
 /** The entry point for the game server application. Selects as specific game (BotWar)
@@ -46,15 +46,16 @@ object Main {
         // prepare the Akka actor system to be used by the various servers of the application
         val actorSystem = ActorSystem("Scalatron")
 
+        val server = Server.start(actorSystem)
         // start up Scalatron background services (e.g. compile service, which will use the actor system)
-        val scalatron = ScalatronOutward(argMap, actorSystem, verbose)
+        val scalatron: ScalatronOutward = ScalatronOutward(argMap, actorSystem, verbose, s => server.injectMessage(RoomView.StateMessage("theState: " + s)))
         scalatron.start()
 
         // prepare (and start) the web server - eventually this should also use the Akka actorSystem (e.g., Spray?)
         val webServer = WebServer(actorSystem, scalatron, argMap, verbose)
         webServer.start()
 
-        Server.start(actorSystem)
+//        Server.start(actorSystem)
 
         // pass control to the tournament game loop - runs either forever or for some rounds ("-rounds" cmdline arg)
         scalatron.run(argMap)

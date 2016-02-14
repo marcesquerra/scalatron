@@ -1,6 +1,7 @@
 package scalatron.scalatron.api
 
 import akka.actor.ActorSystem
+import scalatron.core.Simulation.UntypedState
 import scalatron.core.{PermanentConfig, Scalatron}
 
 
@@ -38,8 +39,8 @@ object ScalatronOutward {
       * scalatron.shutdown()
       * </pre>
       */
-    def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean = true): ScalatronOutward =
-        scalatron.scalatron.impl.ScalatronImpl(argMap, actorSystem, verbose)
+    def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean = true, listener: UntypedState => Unit): ScalatronOutward =
+        scalatron.scalatron.impl.ScalatronImpl(argMap, actorSystem, verbose, listener)
 
 
     val cmdArgList = Iterable(

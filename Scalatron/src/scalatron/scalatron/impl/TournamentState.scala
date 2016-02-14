@@ -11,11 +11,12 @@ import scalatron.core.{Simulation, TournamentRoundResult}
 
 object TournamentState
 {
-    val Empty = new TournamentState
+//    val Empty = new TournamentState(s => ())
+    def withListener(listener: Simulation.UntypedState => Unit) = new TournamentState(listener)
 }
 
 
-class TournamentState
+class TournamentState(listener: Simulation.UntypedState => Unit)
 {
     var roundsPlayed = 0
     var results = List.empty[TournamentRoundResult]
@@ -24,7 +25,10 @@ class TournamentState
       * This can be streamed to a display client to render the tournament remotely.
       */
     private var mostRecentStateOpt: Option[Simulation.UntypedState] = None
-    def updateMostRecentState(mostRecentState: Simulation.UntypedState) { mostRecentStateOpt = Some(mostRecentState) }
+    def updateMostRecentState(mostRecentState: Simulation.UntypedState) {
+        listener(mostRecentState)
+        mostRecentStateOpt = Some(mostRecentState)
+    }
     def getMostRecentStateOpt = mostRecentStateOpt
 
 
@@ -49,7 +53,7 @@ class TournamentState
       * starting with the most recent rounds. The aggregate contains the cumulative score for
       * each player. */
     def aggregateResult(maxRounds: Int): AggregateResult = {
-        val mostRecentResults = roundResults(maxRounds)
+        val mostRecentResults: Iterable[TournamentRoundResult] = roundResults(maxRounds)
         mostRecentResults.aggregate(AggregateResult.Zero)(TournamentRoundResult.merge, AggregateResult.merge)
     }
 
