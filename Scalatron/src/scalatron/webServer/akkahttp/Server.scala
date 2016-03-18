@@ -2,12 +2,12 @@ package scalatron.webServer.akkahttp
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage, Message}
+import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Source, Flow}
-import akka.stream.stage.{TerminationDirective, SyncDirective, Context, PushStage}
+import akka.stream.scaladsl.Flow
+import akka.stream.stage.{Context, PushStage, SyncDirective, TerminationDirective}
 
 import scala.util.{Failure, Success}
 
@@ -20,15 +20,6 @@ object Server {
     counter
   }
 
-  def greeter(implicit m: ActorMaterializer): Flow[Message, Message, Any] = Flow[Message].mapConcat {
-    case tm: TextMessage =>
-      TextMessage(Source.single("Hello ") ++ tm.textStream ++ Source.single("!")) :: Nil
-    case bm: BinaryMessage =>
-      // ignore binary messages but drain content to avoid the stream being clogged
-      bm.dataStream.runWith(Sink.ignore)
-      Nil
-  }
-
   def websocketFlow(id: Int, roomView: RoomView): Flow[Message, Message, Unit] =
     Flow[Message]
       .collect {
@@ -36,8 +27,11 @@ object Server {
       }
       .via(roomView.viewFlow(id)) // ... and route them through the viewFlow ...
       .map {
-        case msg: RoomView.Message ⇒
-          TextMessage.Strict(msg.toString) // ... pack outgoing messages into WS JSON messages ...
+            case msg: RoomView.StateMessage =>
+              TextMessage.Strict(msg.s.toJson) // ... pack outgoing messages into WS JSON messages ...
+
+            case msg: RoomView.Message =>
+              TextMessage.Strict(msg.toString) // ... pack outgoing messages into WS JSON messages ...
       }
       .via(reportErrorsFlow) // ... then log any processing errors on stdin
 

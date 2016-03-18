@@ -4,11 +4,13 @@ import akka.actor._
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Source, Sink, Flow}
 
+import scalatron.core.Simulation.OutwardState
+
 object RoomView {
 
   trait Message
 
-  case class StateMessage(s: String) extends Message
+  case class StateMessage(s: OutwardState) extends Message
 
   case class ReceivedMessage(id: Int, message: String) extends Message
 
@@ -30,7 +32,7 @@ object RoomView {
           println(v)
           subscribers = subscribers.filterNot(_._1 == id)
         case Terminated(sub) =>
-          // clean up dead subscribers, but should have been removed when `ParticipantLeft`
+          // clean up dead subscribers, but should have been removed when `ViewerLeft`
           subscribers = subscribers.filterNot(_._2 == sub)
       }
 

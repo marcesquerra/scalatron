@@ -1,7 +1,7 @@
 package scalatron.scalatron.api
 
 import akka.actor.ActorSystem
-import scalatron.core.Simulation.UntypedState
+import scalatron.core.Simulation.{OutwardState, UntypedState}
 import scalatron.core.{PermanentConfig, Scalatron}
 
 
@@ -39,7 +39,7 @@ object ScalatronOutward {
       * scalatron.shutdown()
       * </pre>
       */
-    def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean = true, listener: UntypedState => Unit): ScalatronOutward =
+    def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean = true, listener: OutwardState => Unit): ScalatronOutward =
         scalatron.scalatron.impl.ScalatronImpl(argMap, actorSystem, verbose, listener)
 
 

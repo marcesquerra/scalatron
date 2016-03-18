@@ -14,7 +14,7 @@ import scalatron.core.Scalatron.{ScalatronException, SourceFile, User}
 import java.net.URLDecoder
 import akka.routing.{RoundRobinGroup, RoundRobinPool}
 import scalatron.scalatron.api.ScalatronOutward
-import scalatron.core.Simulation.UntypedState
+import scalatron.core.Simulation.{OutwardState, UntypedState}
 import scalatron.core._
 
 
@@ -29,7 +29,7 @@ object ScalatronImpl {
     * @param verbose if true, use verbose logging
     * @return
     */
-  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, listener: UntypedState => Unit): ScalatronImpl = {
+  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, listener: OutwardState => Unit): ScalatronImpl = {
     // try to locate a base directory for the installation, e.g. '/Scalatron'
     val scalatronInstallationDirectoryPath = detectInstallationDirectory(verbose)
 

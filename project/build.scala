@@ -27,6 +27,10 @@ object build extends Build {
     }
   )
 
+  val akkaVersion = "2.4.1"
+  val akkaStreamV = "2.0.2"
+  val circeVersion = "0.3.0"
+
   lazy val all = Project(
     id = "all",
     base = file("."),
@@ -43,7 +47,10 @@ object build extends Build {
   lazy val core = Project("ScalatronCore", file("ScalatronCore"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.3.7"
+        "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+        "io.circe"           %% "circe-core"                        % circeVersion,
+        "io.circe"           %% "circe-generic"                     % circeVersion,
+        "io.circe"           %% "circe-jawn"                        % circeVersion
       )
     ) ++ Seq(
       jarName in assembly := "ScalatronCore.jar" // , logLevel in assembly := Level.Debug
@@ -53,15 +60,12 @@ object build extends Build {
   lazy val botwar = Project("BotWar", file("BotWar"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.3.7"
+        "com.typesafe.akka" %% "akka-actor" % akkaVersion
       )
     ) ++ Seq(
       jarName in assembly := "BotWar.jar" // , logLevel in assembly := Level.Debug
     )
   ) dependsOn (core)
-
-  val akkaVersion = "2.4.1"
-  val akkaStreamV = "2.0.2"
 
   lazy val main = Project("Scalatron", file("Scalatron"),
     settings = standardSettings ++ Seq(
@@ -71,15 +75,12 @@ object build extends Build {
         "com.typesafe.akka"  %% "akka-http-experimental"            % akkaStreamV,
         "com.typesafe.akka"  %% "akka-http-testkit-experimental"    % akkaStreamV,
         "com.typesafe.akka"  %% "akka-actor"                        % akkaVersion,
-        //        "org.eclipse.jetty.aggregate" % "jetty-webapp" % "8.1.15.v20140411" intransitive(),
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",
         "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.1",
         "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.4.1",
-//        "com.fasterxml.jackson.jaxrs" % "jackson-jaxrs-providers" % "2.4.1",
         "com.fasterxml.jackson.jaxrs" % "jackson-jaxrs-json-provider" % "2.4.1",
-        //        "org.codehaus.jackson" % "jackson-jaxrs" % "1.9.13",
         "com.sun.jersey" % "jersey-bundle" % "1.18.1",
         "javax.servlet" % "javax.servlet-api" % "3.0.1",
         "org.eclipse.jgit" % "org.eclipse.jgit.http.server" % "3.4.1.201406201815-r",

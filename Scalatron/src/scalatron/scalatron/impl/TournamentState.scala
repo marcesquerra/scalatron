@@ -12,11 +12,11 @@ import scalatron.core.{Simulation, TournamentRoundResult}
 object TournamentState
 {
 //    val Empty = new TournamentState(s => ())
-    def withListener(listener: Simulation.UntypedState => Unit) = new TournamentState(listener)
+    def withListener(listener: Simulation.OutwardState => Unit) = new TournamentState(listener)
 }
 
 
-class TournamentState(listener: Simulation.UntypedState => Unit)
+class TournamentState(listener: Simulation.OutwardState => Unit)
 {
     var roundsPlayed = 0
     var results = List.empty[TournamentRoundResult]
@@ -26,7 +26,7 @@ class TournamentState(listener: Simulation.UntypedState => Unit)
       */
     private var mostRecentStateOpt: Option[Simulation.UntypedState] = None
     def updateMostRecentState(mostRecentState: Simulation.UntypedState) {
-        listener(mostRecentState)
+        listener(mostRecentState.outWardState)
         mostRecentStateOpt = Some(mostRecentState)
     }
     def getMostRecentStateOpt = mostRecentStateOpt

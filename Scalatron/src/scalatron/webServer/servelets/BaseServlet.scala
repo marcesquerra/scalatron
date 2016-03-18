@@ -1,10 +1,8 @@
 package scalatron.webServer.servelets
 
 import javax.servlet.http.{HttpServlet, HttpServletRequest, HttpServletResponse}
-import io.Source
 import java.net.URL
 import java.io.{InputStream, BufferedOutputStream, BufferedInputStream}
-import scalatron.scalatron.impl.FileUtil
 import scalatron.scalatron.impl.FileUtil
 
 

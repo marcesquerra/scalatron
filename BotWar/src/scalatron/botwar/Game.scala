@@ -18,11 +18,11 @@ import scalatron.botwar.renderer.WSActor.Render
   * It is made available to the Scalatron server via the GameFactory class.
   */
 case object Game extends scalatron.core.Game {
+
   def gameSpecificPackagePath = "scalatron.botwar.botPlugin"
 
   def runVisually(rounds: Int, scalatron: ScalatronInward) {
     val argMap = scalatron.argMap
-
     // determine the permanent configuration for the game
     val permanentConfig = PermanentConfig.fromArgMap(scalatron.secureMode, argMap)
 

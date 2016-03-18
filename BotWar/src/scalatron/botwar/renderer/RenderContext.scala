@@ -28,7 +28,6 @@ object RenderContext {
 }
 
 case class RenderContext(boardSize: XY, canvasSizeX: Int, canvasSizeY: Int) {
-  println("created RenderContext")
 
   def isSuitableFor(renderTarget: RenderTarget, state: State) =
     renderTarget.canvasSizeX == canvasSizeX &&
