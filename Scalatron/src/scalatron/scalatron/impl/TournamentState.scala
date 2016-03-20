@@ -12,11 +12,11 @@ import scalatron.core.{Simulation, TournamentRoundResult}
 object TournamentState
 {
 //    val Empty = new TournamentState(s => ())
-    def withListener(listener: Simulation.OutwardState => Unit) = new TournamentState(listener)
+    def withListeners(stateListener: Simulation.OutwardState => Unit, leaderBoardListener: LeaderBoard => Unit) = new TournamentState(stateListener, leaderBoardListener)
 }
 
 
-class TournamentState(listener: Simulation.OutwardState => Unit)
+class TournamentState(stateListener: Simulation.OutwardState => Unit, leaderBoardListener: LeaderBoard => Unit)
 {
     var roundsPlayed = 0
     var results = List.empty[TournamentRoundResult]
@@ -26,7 +26,7 @@ class TournamentState(listener: Simulation.OutwardState => Unit)
       */
     private var mostRecentStateOpt: Option[Simulation.UntypedState] = None
     def updateMostRecentState(mostRecentState: Simulation.UntypedState) {
-        listener(mostRecentState.outWardState)
+        stateListener(mostRecentState.outWardState)
         mostRecentStateOpt = Some(mostRecentState)
     }
     def getMostRecentStateOpt = mostRecentStateOpt
@@ -42,6 +42,7 @@ class TournamentState(listener: Simulation.OutwardState => Unit)
         results = result :: results
         assert(results.length == roundsPlayed)
         leaderBoard = computeLeaderboard
+        leaderBoardListener(leaderBoard)
     }
 
     /** Returns tournament round results for up to the given number of rounds, starting with

@@ -61,30 +61,29 @@ object BotWarSimulation {
     lazy val bots = gameState.board.botsFiltered(_ => true).map(bot).toVector
 
     def bot(b: Bot) = {
-      val out = b.variety match {
-        case Bot.Occluded => OutwardState.Bot(t = '?')
-        case Bot.GoodPlant => OutwardState.Bot(t = 'P')
-        case Bot.BadPlant => OutwardState.Bot(t = 'p')
-        case Bot.GoodBeast => OutwardState.Bot(t = 'B')
-        case Bot.BadBeast => OutwardState.Bot(t = 'b')
-        case Bot.Wall => OutwardState.Bot(t = 'W')
-        case p: Bot.Player if p.isMaster => OutwardState.Bot(id = b.id, cpu = Some(p.cpuTime), t = 'M', name = Some(b.name), energy = Some(b.energy))
-        case p: Bot.Player => OutwardState.Bot(t = 'm', mId = Some(p.masterId))
+      val pos = OutwardState.XY(b.pos.x, b.pos.y)
+      b.variety match {
+        case Bot.Occluded => OutwardState.Bot.Occluded(b.pos.x, b.pos.y)
+        case Bot.GoodPlant => OutwardState.Bot.GoodPlant(b.pos.x, b.pos.y)
+        case Bot.BadPlant => OutwardState.Bot.BadPlant(b.pos.x, b.pos.y)
+        case Bot.GoodBeast => OutwardState.Bot.GoodBeast(b.pos.x, b.pos.y)
+        case Bot.BadBeast => OutwardState.Bot.BadBeast(b.pos.x, b.pos.y)
+        case Bot.Wall => OutwardState.Bot.Wall(b.pos.x, b.pos.y)
+        case p: Bot.Player if p.isMaster => OutwardState.Bot.MasterPlayer(b.pos.x, b.pos.y, id = b.id, cpu = p.cpuTime, name = b.name, e = b.energy)
+        case p: Bot.Player => OutwardState.Bot.SlavePlayer(b.pos.x, b.pos.y, mId = p.masterId, name = b.name)
       }
-      out.copy(pos = OutwardState.XY(x = b.pos.x, y = b.pos.y))
     }
 
     def decoration(d: Decoration) = {
-      val out = d.variety match {
-        case Decoration.Explosion(blastRadius) => OutwardState.Decoration(t = 'E', meta = Some(blastRadius.toString))
-        case Decoration.Bonk => OutwardState.Decoration('B')
-        case Decoration.Bonus(energy) => OutwardState.Decoration('E', Some(energy.toString))
-        case Decoration.Text(text) => OutwardState.Decoration('T', Some(text))
-        case Decoration.Annihilation => OutwardState.Decoration('A')
-        case Decoration.MarkedCell(color) => OutwardState.Decoration('M', Some(color))
-        case Decoration.Line(toPos, color) => OutwardState.Decoration('L', meta = Some(color), to = Some(OutwardState.XY(toPos.x, toPos.y)))
+      d.variety match {
+        case Decoration.Explosion(blastRadius) => OutwardState.Decoration.Explosion(d.pos.x, d.pos.y, r = blastRadius)
+        case Decoration.Bonk => OutwardState.Decoration.Bonk(d.pos.x, d.pos.y)
+        case Decoration.Bonus(energy) => OutwardState.Decoration.Bonus(d.pos.x, d.pos.y, energy)
+        case Decoration.Text(text) => OutwardState.Decoration.Text(d.pos.x, d.pos.y, text)
+        case Decoration.Annihilation => OutwardState.Decoration.Annihilation(d.pos.x, d.pos.y)
+        case Decoration.MarkedCell(color) => OutwardState.Decoration.MarkedCell(d.pos.x, d.pos.y, color)
+        case Decoration.Line(toPos, color) => OutwardState.Decoration.Line(d.pos.x, d.pos.y, OutwardState.XY(toPos.x, toPos.y), color)
       }
-      out.copy(pos = OutwardState.XY(d.pos.x, d.pos.y))
     }
 
     override def outWardState: OutwardState = {
@@ -93,7 +92,6 @@ object BotWarSimulation {
       OutwardState(rounds, OutwardState.XY(size.x, size.y), time, bots, decorations)
     }
   }
-
 
   case class Factory(config: Config) extends Simulation.Factory[SimState] {
     def createInitialState(randomSeed: Int, entityControllers: Iterable[EntityController], executionContextForUntrustedCode: ExecutionContext) = {

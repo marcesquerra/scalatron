@@ -10,7 +10,7 @@ import scalatron.core.Scalatron.Constants._
 import scalatron.Version
 import java.text.DateFormat
 import java.util.Date
-import scalatron.core.Scalatron.{ScalatronException, SourceFile, User}
+import scalatron.core.Scalatron.{LeaderBoard, ScalatronException, SourceFile, User}
 import java.net.URLDecoder
 import akka.routing.{RoundRobinGroup, RoundRobinPool}
 import scalatron.scalatron.api.ScalatronOutward
@@ -29,7 +29,7 @@ object ScalatronImpl {
     * @param verbose if true, use verbose logging
     * @return
     */
-  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, listener: OutwardState => Unit): ScalatronImpl = {
+  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, stateListener: OutwardState => Unit, leaderBoardListener: LeaderBoard => Unit): ScalatronImpl = {
     // try to locate a base directory for the installation, e.g. '/Scalatron'
     val scalatronInstallationDirectoryPath = detectInstallationDirectory(verbose)
 
@@ -106,7 +106,7 @@ object ScalatronImpl {
       usersBaseDirectoryPath,
       samplesBaseDirectoryPath,
       pluginBaseDirectoryPath,
-      TournamentState.withListener(listener),
+      TournamentState.withListeners(stateListener, leaderBoardListener),
       secureMode,
       verbose
     )

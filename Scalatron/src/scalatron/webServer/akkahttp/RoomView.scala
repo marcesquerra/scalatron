@@ -4,6 +4,7 @@ import akka.actor._
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Source, Sink, Flow}
 
+import scalatron.core.Scalatron.LeaderBoard
 import scalatron.core.Simulation.OutwardState
 
 object RoomView {
@@ -11,6 +12,8 @@ object RoomView {
   trait Message
 
   case class StateMessage(s: OutwardState) extends Message
+
+  case class LeaderBoardMessage(l: LeaderBoard) extends Message
 
   case class ReceivedMessage(id: Int, message: String) extends Message
 
@@ -21,12 +24,16 @@ object RoomView {
   def create(system: ActorSystem): RoomView = {
     val roomActor = system.actorOf(Props(new Actor {
       var subscribers = Set.empty[(Int, ActorRef)]
-
+      var leaderBoard: Option[LeaderBoardMessage] = None
       def receive: Receive = {
         case n@NewViewer(id, subscriber) =>
           println(n)
           context.watch(subscriber)
           subscribers += (id -> subscriber)
+          leaderBoard.foreach(l => subscriber ! l)
+        case msg: LeaderBoardMessage =>
+          leaderBoard = Some(msg)
+          dispatch(msg)
         case msg: Message => dispatch(msg)
         case v@ViewerLeft(id) =>
           println(v)

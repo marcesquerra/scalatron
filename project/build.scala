@@ -47,10 +47,7 @@ object build extends Build {
   lazy val core = Project("ScalatronCore", file("ScalatronCore"),
     settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-        "io.circe"           %% "circe-core"                        % circeVersion,
-        "io.circe"           %% "circe-generic"                     % circeVersion,
-        "io.circe"           %% "circe-jawn"                        % circeVersion
+        "com.typesafe.akka" %% "akka-actor" % akkaVersion
       )
     ) ++ Seq(
       jarName in assembly := "ScalatronCore.jar" // , logLevel in assembly := Level.Debug
@@ -75,6 +72,9 @@ object build extends Build {
         "com.typesafe.akka"  %% "akka-http-experimental"            % akkaStreamV,
         "com.typesafe.akka"  %% "akka-http-testkit-experimental"    % akkaStreamV,
         "com.typesafe.akka"  %% "akka-actor"                        % akkaVersion,
+        "io.circe"           %% "circe-core"                        % circeVersion,
+        "io.circe"           %% "circe-generic"                     % circeVersion,
+        "io.circe"           %% "circe-jawn"                        % circeVersion,
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",

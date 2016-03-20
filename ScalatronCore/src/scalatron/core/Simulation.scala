@@ -9,7 +9,6 @@ import akka.actor.ActorSystem
 import scala.collection.immutable
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
-import scalatron.core.Simulation.OutwardState.{XY, Decoration, Bot}
 
 
 /** Traits for generic simulations, of which a game like BotWar is an example.
@@ -55,17 +54,59 @@ object Simulation {
 
     case class XY(x: Int, y: Int)
 
-    case class Bot(id: Int = -1, cpu: Option[Long] = None, mId: Option[Int] = None , name: Option[String] = None, pos: XY = XY(-1, -1), energy: Option[Int] = None, t: Char)
+    sealed trait Entity {
+      def t: Char
 
-    case class Decoration(t: Char, meta: Option[String] = None, to: Option[XY] = None, pos: XY = XY(-1, -1))
+      def x: Int
+
+      def y: Int
+    }
+
+    sealed trait Bot extends Entity
+
+    object Bot {
+
+      case class Occluded(x: Int, y: Int, t: Char = '?') extends Bot
+
+      case class GoodPlant(x: Int, y: Int, t: Char = 'P') extends Bot
+
+      case class BadPlant(x: Int, y: Int, t: Char = 'p') extends Bot
+
+      case class GoodBeast(x: Int, y: Int, t: Char = 'B') extends Bot
+
+      case class BadBeast(x: Int, y: Int, t: Char = 'b') extends Bot
+
+      case class Wall(x: Int, y: Int, t: Char = 'W') extends Bot
+
+      case class MasterPlayer(x: Int, y: Int, id: Long, cpu: Long, name: String, e: Long, t: Char = 'M') extends Bot
+
+      case class SlavePlayer(x: Int, y: Int, mId: Long, name: String, t: Char = 'S') extends Bot
+
+    }
+
+    sealed trait Decoration extends Entity
+
+    case object Decoration {
+
+      case class Explosion(x: Int, y: Int, r: Int, t: Char = 'E') extends Decoration
+
+      case class Bonk(x: Int, y: Int, t: Char = 'X') extends Decoration
+
+      case class Bonus(x: Int, y: Int, e: Long, t: Char = 'Y') extends Decoration
+
+      case class Text(x: Int, y: Int, text: String, t: Char = 'T') extends Decoration
+
+      case class Annihilation(x: Int, y: Int, t: Char = 'A') extends Decoration
+
+      case class MarkedCell(x: Int, y: Int, color: String, t: Char = 'C') extends Decoration
+
+      case class Line(x: Int, y: Int, to: XY, color: String, t: Char = 'L') extends Decoration
+
+    }
+
   }
 
-  case class OutwardState(rounds: Int, size: XY, time: Long, bots: immutable.Seq[Bot], deco: immutable.Seq[Decoration]) {
-
-    import io.circe._, io.circe.generic.auto._, io.circe.jawn._, io.circe.syntax._
-
-    def toJson = this.asJson.noSpaces
-  }
+  case class OutwardState(rounds: Int, size: OutwardState.XY, time: Long, bots: immutable.Seq[OutwardState.Bot], decorations: immutable.Seq[OutwardState.Decoration])
 
   /** Simulation.UntypedState: non-polymorphic base trait for State that simplifies passing State to contexts
     * where we don't want to introduce the types of S and R.

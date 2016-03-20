@@ -7,7 +7,7 @@ import scalatron.Version
 import scalatron.webServer.WebServer
 import akka.actor._
 import scalatron.scalatron.api.ScalatronOutward
-import scalatron.webServer.akkahttp.RoomView.StateMessage
+import scalatron.webServer.akkahttp.RoomView.{LeaderBoardMessage, StateMessage}
 import scalatron.webServer.akkahttp.{RoomView, Server}
 
 
@@ -49,7 +49,7 @@ object Main {
 
         val server = Server.start(actorSystem)
         // start up Scalatron background services (e.g. compile service, which will use the actor system)
-        val scalatron: ScalatronOutward = ScalatronOutward(argMap, actorSystem, verbose, state => server.injectMessage(StateMessage(state)))
+        val scalatron: ScalatronOutward = ScalatronOutward(argMap, actorSystem, verbose, state => server.injectMessage(StateMessage(state)), leaderBord => server.injectMessage(LeaderBoardMessage(leaderBord)))
         scalatron.start()
 
         // prepare (and start) the web server - eventually this should also use the Akka actorSystem (e.g., Spray?)
