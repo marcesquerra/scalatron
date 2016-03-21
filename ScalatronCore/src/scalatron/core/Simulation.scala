@@ -72,9 +72,9 @@ object Simulation {
 
       case class BadPlant(x: Int, y: Int, t: Char = 'p') extends Bot
 
-      case class GoodBeast(x: Int, y: Int, t: Char = 'B') extends Bot
+      case class GoodBeast(x: Int, y: Int, id: Long, t: Char = 'B') extends Bot
 
-      case class BadBeast(x: Int, y: Int, t: Char = 'b') extends Bot
+      case class BadBeast(x: Int, y: Int, id: Long, t: Char = 'b') extends Bot
 
       case class Wall(x: Int, y: Int, t: Char = 'W') extends Bot
 

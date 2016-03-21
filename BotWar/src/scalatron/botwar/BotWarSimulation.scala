@@ -56,33 +56,42 @@ object BotWarSimulation {
         }
       })
 
-    lazy val decorations = gameState.board.decorations.map(x => decoration(x._2)).toVector
+    lazy val decorations = gameState.board.decorations.filter(x => x._2.variety match {
+      case Decoration.Annihilation | _: Decoration.MarkedCell | _: Decoration.Line => false
+      case _ => true
+    }).map(x => decoration(x._2)).toVector
 
     lazy val bots = gameState.board.botsFiltered(_ => true).map(bot).toVector
 
     def bot(b: Bot) = {
-      val pos = OutwardState.XY(b.pos.x, b.pos.y)
+      val x = b.pos.x
+      val y = b.pos.y
+
       b.variety match {
-        case Bot.Occluded => OutwardState.Bot.Occluded(b.pos.x, b.pos.y)
-        case Bot.GoodPlant => OutwardState.Bot.GoodPlant(b.pos.x, b.pos.y)
-        case Bot.BadPlant => OutwardState.Bot.BadPlant(b.pos.x, b.pos.y)
-        case Bot.GoodBeast => OutwardState.Bot.GoodBeast(b.pos.x, b.pos.y)
-        case Bot.BadBeast => OutwardState.Bot.BadBeast(b.pos.x, b.pos.y)
-        case Bot.Wall => OutwardState.Bot.Wall(b.pos.x, b.pos.y)
-        case p: Bot.Player if p.isMaster => OutwardState.Bot.MasterPlayer(b.pos.x, b.pos.y, id = b.id, cpu = p.cpuTime, name = b.name, e = b.energy)
-        case p: Bot.Player => OutwardState.Bot.SlavePlayer(b.pos.x, b.pos.y, mId = p.masterId)
+        case Bot.Occluded => OutwardState.Bot.Occluded(x, y)
+        case Bot.GoodPlant => OutwardState.Bot.GoodPlant(x, y)
+        case Bot.BadPlant => OutwardState.Bot.BadPlant(x, y)
+        case Bot.GoodBeast => OutwardState.Bot.GoodBeast(x, y, id = b.id)
+        case Bot.BadBeast => OutwardState.Bot.BadBeast(x, y, b.id)
+        case Bot.Wall => OutwardState.Bot.Wall(x, y)
+        case p: Bot.Player if p.isMaster => OutwardState.Bot.MasterPlayer(x, y, id = b.id, cpu = p.cpuTime, name = b.name, e = b.energy)
+        case p: Bot.Player => OutwardState.Bot.SlavePlayer(x, y, mId = p.masterId)
       }
     }
 
     def decoration(d: Decoration) = {
+      val x = d.pos.x
+      val y = d.pos.y
+
       d.variety match {
-        case Decoration.Explosion(blastRadius) => OutwardState.Decoration.Explosion(d.pos.x, d.pos.y, r = blastRadius)
-        case Decoration.Bonk => OutwardState.Decoration.Bonk(d.pos.x, d.pos.y)
-        case Decoration.Bonus(energy) => OutwardState.Decoration.Bonus(d.pos.x, d.pos.y, energy)
-        case Decoration.Text(text) => OutwardState.Decoration.Text(d.pos.x, d.pos.y, text)
-        case Decoration.Annihilation => OutwardState.Decoration.Annihilation(d.pos.x, d.pos.y)
-        case Decoration.MarkedCell(color) => OutwardState.Decoration.MarkedCell(d.pos.x, d.pos.y, color)
-        case Decoration.Line(toPos, color) => OutwardState.Decoration.Line(d.pos.x, d.pos.y, OutwardState.XY(toPos.x, toPos.y), color)
+        case Decoration.Explosion(blastRadius) => OutwardState.Decoration.Explosion(x, y, r = blastRadius)
+        case Decoration.Bonk => OutwardState.Decoration.Bonk(x, y)
+        case Decoration.Bonus(energy) => OutwardState.Decoration.Bonus(x, y, energy)
+        case Decoration.Text(text) => OutwardState.Decoration.Text(x, y, text)
+          // These are filtered above, but keeping them here to prevent compile warning
+        case Decoration.Annihilation => OutwardState.Decoration.Annihilation(x, y)
+        case Decoration.MarkedCell(color) => OutwardState.Decoration.MarkedCell(x, y, color)
+        case Decoration.Line(toPos, color) => OutwardState.Decoration.Line(x, y, OutwardState.XY(toPos.x, toPos.y), color)
       }
     }
 
