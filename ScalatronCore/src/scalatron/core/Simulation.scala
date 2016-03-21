@@ -76,7 +76,7 @@ object Simulation {
 
       case class BadBeast(x: Int, y: Int, id: Long, t: Char = 'b') extends Bot
 
-      case class Wall(x: Int, y: Int, t: Char = 'W') extends Bot
+      case class Wall(x: Int, y: Int, e: XY, t: Char = 'W') extends Bot
 
       case class MasterPlayer(x: Int, y: Int, id: Long, cpu: Long, name: String, e: Long, t: Char = 'M') extends Bot
 

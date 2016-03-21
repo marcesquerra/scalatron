@@ -4,10 +4,12 @@ import scalatron.core.Scalatron.LeaderBoard
 import scalatron.core.Simulation.OutwardState
 
 /**
- * Created by ollemuhr_hemma on 2016-03-20.
+ *
  */
 object Json {
+
   import io.circe._, io.circe.generic.auto._, io.circe.jawn._, io.circe.syntax._
+
   implicit private val botEncoder: Encoder[OutwardState.Bot] = new Encoder[OutwardState.Bot] {
     override def apply(a: OutwardState.Bot): Json = a match {
       case b: OutwardState.Bot.BadBeast => b.asJson

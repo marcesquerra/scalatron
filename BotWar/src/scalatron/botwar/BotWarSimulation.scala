@@ -73,7 +73,7 @@ object BotWarSimulation {
         case Bot.BadPlant => OutwardState.Bot.BadPlant(x, y)
         case Bot.GoodBeast => OutwardState.Bot.GoodBeast(x, y, id = b.id)
         case Bot.BadBeast => OutwardState.Bot.BadBeast(x, y, b.id)
-        case Bot.Wall => OutwardState.Bot.Wall(x, y)
+        case Bot.Wall => OutwardState.Bot.Wall(x, y, OutwardState.XY(b.extent.x, b.extent.y))
         case p: Bot.Player if p.isMaster => OutwardState.Bot.MasterPlayer(x, y, id = b.id, cpu = p.cpuTime, name = b.name, e = b.energy)
         case p: Bot.Player => OutwardState.Bot.SlavePlayer(x, y, mId = p.masterId)
       }
