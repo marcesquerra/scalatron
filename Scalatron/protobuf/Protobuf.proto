@@ -1,0 +1,163 @@
+option java_package = "scalatron.serialization";
+
+option optimize_for = SPEED;
+
+message XY {
+    optional int32 x = 1;
+    optional int32 y = 2;
+}
+
+message BotFormat {
+    extensions 100 to max;
+    enum Type {
+        Occluded = 1;
+        GoodPlant = 2;
+        BadPlant = 3;
+        GoodBeast = 4;
+        BadBeast = 5;
+        Wall = 6;
+        MasterPlayer = 7;
+        SlavePlayer = 8;
+    }
+    required Type type = 1;
+    optional int32 x = 2;
+    optional int32 y = 3;
+}
+
+message OccludedFormat {
+    extend BotFormat {
+        optional OccludedFormat extension = 100;
+    }
+}
+
+message GoodPlantFormat {
+    extend BotFormat {
+        optional GoodPlantFormat extension = 101;
+    }
+}
+
+message BadPlantFormat {
+    extend BotFormat {
+        optional BadPlantFormat extension = 102;
+    }
+}
+
+message GoodBeastFormat {
+    extend BotFormat {
+        optional GoodBeastFormat extension = 103;
+    }
+    optional int64 id = 1;
+}
+
+message BadBeastFormat {
+    extend BotFormat {
+        optional BadBeastFormat extension = 104;
+    }
+    optional int64 id = 1;
+}
+
+message WallFormat {
+    extend BotFormat {
+        optional WallFormat extension = 105;
+    }
+    optional XY e = 1;
+}
+
+message MasterPlayerFormat {
+    extend BotFormat {
+        optional MasterPlayerFormat extension = 106;
+    }
+    optional int64 id = 1;
+    optional int64 cpu = 2;
+    optional string name = 3;
+    optional int64 e = 4;
+}
+
+message SlavePlayerFormat {
+    extend BotFormat {
+        optional SlavePlayerFormat extension = 107;
+    }
+    optional int64 mId = 1;
+}
+
+message DecorationFormat {
+    extensions 100 to max;
+    enum Type {
+        Explosion = 1;
+        Bonk = 2;
+        Bonus = 3;
+        Text = 4;
+    }
+    required Type type = 1;
+    optional int32 x = 2;
+    optional int32 y = 3;
+}
+
+message ExplosionFormat {
+    extend DecorationFormat {
+        optional ExplosionFormat extension = 100;
+    }
+    optional int32 r = 1;
+}
+
+message BonkFormat {
+    extend DecorationFormat {
+        optional BonkFormat extension = 101;
+    }
+}
+
+message BonusFormat {
+    extend DecorationFormat {
+        optional BonusFormat extension = 102;
+    }
+    optional int64 e = 1;
+}
+
+message TextFormat {
+    extend DecorationFormat {
+        optional TextFormat extension = 103;
+    }
+    optional string text = 1;
+}
+
+message OutwardStateFormat {
+    optional int32 rounds = 1;
+    optional XY size = 2;
+    optional int32 time = 3;
+    repeated BotFormat bots = 4;
+    repeated DecorationFormat decorations = 5;
+}
+
+message StepAddedFormat {
+    optional OutwardStateFormat outwardState = 1;
+}
+
+message RoundStartedFormat {
+    optional string roundId = 1;
+    optional int64 dateTime = 2;
+}
+
+message RoundEndedFormat {
+    optional string roundId = 1;
+    optional int64 dateTime = 2;
+    optional bool complete = 3;
+}
+
+message SnapFormat {
+}
+
+message ResultFormat {
+    optional string name = 1;
+    optional int64 energy = 2;
+}
+
+message RoundResultFormat {
+    optional string roundId = 1;
+    optional int64 dateTime = 2;
+    optional bool complete = 3;
+    repeated ResultFormat results = 4;
+}
+
+message RoundResultsFormat {
+    repeated RoundResultFormat roundResults = 1;
+}

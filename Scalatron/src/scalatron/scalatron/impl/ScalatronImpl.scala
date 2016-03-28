@@ -29,7 +29,7 @@ object ScalatronImpl {
     * @param verbose if true, use verbose logging
     * @return
     */
-  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, stateListener: OutwardState => Unit, leaderBoardListener: LeaderBoard => Unit): ScalatronImpl = {
+  def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean, stateListener: OutwardState => Unit): ScalatronImpl = {
     // try to locate a base directory for the installation, e.g. '/Scalatron'
     val scalatronInstallationDirectoryPath = detectInstallationDirectory(verbose)
 
@@ -106,7 +106,7 @@ object ScalatronImpl {
       usersBaseDirectoryPath,
       samplesBaseDirectoryPath,
       pluginBaseDirectoryPath,
-      TournamentState.withListeners(stateListener, leaderBoardListener),
+      TournamentState.withListeners(stateListener),
       secureMode,
       verbose
     )

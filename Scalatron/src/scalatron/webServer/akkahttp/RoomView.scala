@@ -2,10 +2,11 @@ package scalatron.webServer.akkahttp
 
 import akka.actor._
 import akka.stream.OverflowStrategy
-import akka.stream.scaladsl.{Source, Sink, Flow}
+import akka.stream.scaladsl.{Flow, Sink, Source}
 
-import scalatron.core.Scalatron.LeaderBoard
+import scala.collection.immutable._
 import scalatron.core.Simulation.OutwardState
+import scalatron.persistence.{LiveView, ReplayView}
 
 object RoomView {
 
@@ -13,31 +14,49 @@ object RoomView {
 
   case class StateMessage(s: OutwardState) extends Message
 
-  case class LeaderBoardMessage(l: LeaderBoard) extends Message
+  case class StateMessages(s: Seq[OutwardState]) extends Message
 
   case class ReceivedMessage(id: Int, message: String) extends Message
+
+  case class RoundResult(result: LiveView.RoundResult) extends Message
+
+  case class RoundResults(results: Seq[LiveView.RoundResult]) extends Message
 
   case class NewViewer(id: Int, subscriber: ActorRef)
 
   case class ViewerLeft(id: Int)
 
-  def create(system: ActorSystem): RoomView = {
+  def create(system: ActorSystem, liveView: ActorRef): RoomView = {
     val roomActor = system.actorOf(Props(new Actor {
+
       var subscribers = Set.empty[(Int, ActorRef)]
-      var leaderBoard: Option[LeaderBoardMessage] = None
+      val roundIdRegex = """replay:(.*)""" r
+
       def receive: Receive = {
         case n@NewViewer(id, subscriber) =>
           println(n)
           context.watch(subscriber)
           subscribers += (id -> subscriber)
-          leaderBoard.foreach(l => subscriber ! l)
-        case msg: LeaderBoardMessage =>
-          leaderBoard = Some(msg)
-          dispatch(msg)
-        case msg: Message => dispatch(msg)
         case v@ViewerLeft(id) =>
           println(v)
-          subscribers = subscribers.filterNot(_._1 == id)
+          val (removed, rest) = subscribers.partition { case (sid, sub) => sid == id }
+          removed.headOption.foreach(s => liveView ! LiveView.RemoveSubscriber(s._2))
+          subscribers = rest
+
+        case ReceivedMessage(id, roundIdRegex(roundId)) =>
+          val subscriber = subscribers.find { case (_id, actor) => id == _id }.get._2
+          liveView ! ReplayView.Replay(roundId, subscriber)
+
+        case ReceivedMessage(id, "results") =>
+          val subscriber = subscribers.find { case (sid, s) => sid == id }.get._2
+          liveView ! LiveView.GetResults(subscriber)
+
+        case ReceivedMessage(id, "live") =>
+          val subscriber = subscribers.find { case (sid, s) => sid == id }.get._2
+          liveView ! LiveView.AddSubscriber(subscriber)
+
+        case msg: Message => dispatch(msg)
+
         case Terminated(sub) =>
           // clean up dead subscribers, but should have been removed when `ViewerLeft`
           subscribers = subscribers.filterNot(_._2 == sub)
@@ -49,13 +68,13 @@ object RoomView {
     def roomInSink(id: Int) = Sink.actorRef[Message](roomActor, ViewerLeft(id))
 
     new RoomView {
-      override def viewFlow(id: Int): Flow[String, Message, Unit] = {
-        val in =
-          Flow[String]
-            .map(ReceivedMessage(id, _))
-            .to(roomInSink(id))
 
-        val out = Source.actorRef[Message](10, OverflowStrategy.dropHead)
+      override def viewFlow(id: Int): Flow[String, Message, Unit] = {
+        val in = Flow[String]
+          .map(ReceivedMessage(id, _))
+          .to(roomInSink(id))
+
+        val out = Source.actorRef[Message](5000, OverflowStrategy.dropHead)
           .mapMaterializedValue(roomActor ! NewViewer(id, _))
 
         Flow.fromSinkAndSource(in, out)

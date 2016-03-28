@@ -1,6 +1,6 @@
 package scalatron.webServer.akkahttp
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives._
@@ -20,23 +20,28 @@ object Server {
     counter
   }
 
-  def websocketFlow(id: Int, roomView: RoomView): Flow[Message, Message, Unit] =
-    Flow[Message]
+  def websocketFlow(id: Int, roomView: RoomView): Flow[Message, Message, Unit] = Flow[Message]
       .collect {
         case TextMessage.Strict(msg) ⇒ msg // unpack incoming WS text messages...
       }
       .via(roomView.viewFlow(id)) // ... and route them through the viewFlow ...
       .map {
+            case msg: RoomView.RoundResult =>
+              TextMessage.Strict(Json.print(msg.result))
+
+            case msg: RoomView.RoundResults =>
+              TextMessage.Strict(Json.print(msg.results))
+
             case msg: RoomView.StateMessage =>
               TextMessage.Strict(Json.print(msg.s)) // ... pack outgoing messages into WS JSON messages ...
 
-            case msg: RoomView.LeaderBoardMessage =>
-              TextMessage.Strict(Json.print(msg.l)) // ... pack outgoing messages into WS JSON messages ...
+            case msg: RoomView.StateMessages =>
+              TextMessage.Strict(Json.print(msg)) // ... pack outgoing messages into WS JSON messages ...
 
             case msg: RoomView.Message =>
               TextMessage.Strict(msg.toString) // ... pack outgoing messages into WS JSON messages ...
       }
-      .via(reportErrorsFlow) // ... then log any processing errors on stdin
+    .via(reportErrorsFlow) // ... then log any processing errors on stdin
 
   def reportErrorsFlow[T]: Flow[T, T, Unit] =
     Flow[T]
@@ -49,13 +54,13 @@ object Server {
         }
       })
 
-  def start(implicit system: ActorSystem): RoomView = {
+  def start(liveView: ActorRef)(implicit system: ActorSystem): RoomView = {
 
     implicit val materializer = ActorMaterializer()
 
     implicit val ec = system.dispatcher
 
-    val roomView = RoomView.create(system)
+    val roomView = RoomView.create(system, liveView)
 
     val websocketRoute: Route = path("room") {
       handleWebsocketMessages(websocketFlow(nextId, roomView))

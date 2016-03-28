@@ -41,7 +41,7 @@ object ScalatronOutward {
       * </pre>
       */
     def apply(argMap: Map[String, String], actorSystem: ActorSystem, verbose: Boolean = true, stateListener: OutwardState => Unit = s => (), leaderBoardListener: LeaderBoard => Unit = l => ()): ScalatronOutward =
-        scalatron.scalatron.impl.ScalatronImpl(argMap, actorSystem, verbose, stateListener, leaderBoardListener)
+        scalatron.scalatron.impl.ScalatronImpl(argMap, actorSystem, verbose, stateListener)
 
 
     val cmdArgList = Iterable(

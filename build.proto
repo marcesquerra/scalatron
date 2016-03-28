@@ -1,0 +1,3 @@
+#!/bin/sh
+
+protoc Scalatron/protobuf/*.proto --java_out=Scalatron/src/java

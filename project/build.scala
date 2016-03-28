@@ -1,5 +1,5 @@
 import sbt._
-import Keys._
+import sbt.Keys._
 import sbtassembly.Plugin._
 import AssemblyKeys._
 
@@ -27,7 +27,7 @@ object build extends Build {
     }
   )
 
-  val akkaVersion = "2.4.1"
+  val akkaVersion = "2.4.2"
   val akkaStreamV = "2.0.2"
   val circeVersion = "0.3.0"
 
@@ -39,6 +39,7 @@ object build extends Build {
   )
 
   lazy val src = Seq(
+    javaSource in Compile <<= baseDirectory / "src/java",
     scalaSource in Compile <<= baseDirectory / "src",
     scalaSource in Test <<= baseDirectory / "test",
     resourceDirectory in Compile <<= baseDirectory / "resources"
@@ -65,9 +66,9 @@ object build extends Build {
   ) dependsOn (core)
 
   lazy val main = Project("Scalatron", file("Scalatron"),
-    settings = standardSettings ++ Seq(
+      settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "org.scala-lang" % "scala-compiler" % "2.11.4",
+        "org.scala-lang" % "scala-compiler" % "2.11.7",
         "com.typesafe.akka"  %% "akka-http-core-experimental"       % akkaStreamV,
         "com.typesafe.akka"  %% "akka-http-experimental"            % akkaStreamV,
         "com.typesafe.akka"  %% "akka-http-testkit-experimental"    % akkaStreamV,
@@ -75,6 +76,8 @@ object build extends Build {
         "io.circe"           %% "circe-core"                        % circeVersion,
         "io.circe"           %% "circe-generic"                     % circeVersion,
         "io.circe"           %% "circe-jawn"                        % circeVersion,
+        "com.rbmhtechnology" %% "eventuate-core" % "0.6",
+        "com.rbmhtechnology" %% "eventuate-log-leveldb" % "0.6",
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",
@@ -91,8 +94,10 @@ object build extends Build {
         //        ,
         //        "org.specs2" %% "specs2-scalaz-core" % "7.0.0"
       ),
-      resolvers += "JGit Repository" at "http://download.eclipse.org/jgit/maven"
-    ) ++ Seq(
+      resolvers ++= Seq("JGit Repository" at "http://download.eclipse.org/jgit/maven",
+        "Eventuate Releases" at "https://dl.bintray.com/rbmhtechnology/maven")
+
+  ) ++ Seq(
       jarName in assembly := "Scalatron.jar" // , logLevel in assembly := Level.Debug
     )
   ) dependsOn (botwar)

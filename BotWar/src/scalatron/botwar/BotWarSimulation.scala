@@ -88,17 +88,14 @@ object BotWarSimulation {
         case Decoration.Bonk => OutwardState.Decoration.Bonk(x, y)
         case Decoration.Bonus(energy) => OutwardState.Decoration.Bonus(x, y, energy)
         case Decoration.Text(text) => OutwardState.Decoration.Text(x, y, text)
-          // These are filtered above, but keeping them here to prevent compile warning
-        case Decoration.Annihilation => OutwardState.Decoration.Annihilation(x, y)
-        case Decoration.MarkedCell(color) => OutwardState.Decoration.MarkedCell(x, y, color)
-        case Decoration.Line(toPos, color) => OutwardState.Decoration.Line(x, y, OutwardState.XY(toPos.x, toPos.y), color)
+        case _ => throw new UnsupportedOperationException
       }
     }
 
     override def outWardState: OutwardState = {
       val size = gameState.config.boardParams.size
       val rounds = gameState.config.permanent.stepsPerRound
-      OutwardState(rounds, OutwardState.XY(size.x, size.y), time, bots, decorations)
+      OutwardState(rounds, OutwardState.XY(size.x, size.y), time.toInt, bots, decorations)
     }
   }
 

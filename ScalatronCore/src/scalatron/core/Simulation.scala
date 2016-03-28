@@ -95,18 +95,11 @@ object Simulation {
       case class Bonus(x: Int, y: Int, e: Long, t: Char = 'Y') extends Decoration
 
       case class Text(x: Int, y: Int, text: String, t: Char = 'T') extends Decoration
-
-      case class Annihilation(x: Int, y: Int, t: Char = 'A') extends Decoration
-
-      case class MarkedCell(x: Int, y: Int, color: String, t: Char = 'C') extends Decoration
-
-      case class Line(x: Int, y: Int, to: XY, color: String, t: Char = 'L') extends Decoration
-
     }
 
   }
 
-  case class OutwardState(rounds: Int, size: OutwardState.XY, time: Long, bots: immutable.Seq[OutwardState.Bot], decorations: immutable.Seq[OutwardState.Decoration])
+  case class OutwardState(rounds: Int, size: OutwardState.XY, time: Int, bots: immutable.Seq[OutwardState.Bot], decorations: immutable.Seq[OutwardState.Decoration])
 
   /** Simulation.UntypedState: non-polymorphic base trait for State that simplifies passing State to contexts
     * where we don't want to introduce the types of S and R.
