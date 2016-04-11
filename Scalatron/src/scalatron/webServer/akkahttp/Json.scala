@@ -1,12 +1,8 @@
 package scalatron.webServer.akkahttp
 
-import cats.data.Xor
-
 import scala.collection.immutable._
 import scalatron.core.Simulation.OutwardState
-import scalatron.persistence.LiveView
-import scalatron.persistence.StepRecorder._
-import scalatron.webServer.akkahttp.RoomView.RoundResult
+import scalatron.persistence.ResultRecorder
 
 /**
  *
@@ -36,36 +32,16 @@ object Json {
     }
   }
 
-  def print(result: LiveView.RoundResult) = {
-    result.asJson.noSpaces
-  }
+  //  def print(event: TickRecorder.Event) = {
+  //    event.asJson.noSpaces
+  //  }
 
-  def print(result: LiveView.RoundResults) = {
-    result.asJson.noSpaces
-  }
-
-  def print(result: Seq[LiveView.RoundResult]) = {
+  def print(result: Seq[ResultRecorder.RoundResultAdded]) = {
     result.asJson.noSpaces
   }
 
   def print(state: OutwardState): String = {
     state.asJson.noSpaces
-  }
-
-  def print(state: RoomView.StateMessages): String = {
-    state.s.asJson.noSpaces
-  }
-
-  def print(roundStarted: RoundStarted): String = {
-    roundStarted.asJson.noSpaces
-  }
-
-  def print(roundEnded: RoundEnded): String = {
-    roundEnded.asJson.noSpaces
-  }
-
-  def print(stepAdded: StepAdded): String = {
-    stepAdded.asJson.noSpaces
   }
 
   implicit val botDecoder: Decoder[OutwardState.Bot] = Decoder.instance(c =>
@@ -80,55 +56,4 @@ object Json {
       case 'S' => c.as[OutwardState.Bot.SlavePlayer]
     }
   )
-
-  implicit val decDecoder: Decoder[OutwardState.Decoration] = Decoder.instance(c =>
-    c.downField("t").as[Char].flatMap {
-      case 'E' => c.as[OutwardState.Decoration.Explosion]
-      case 'X' => c.as[OutwardState.Decoration.Bonk]
-      case 'Y' => c.as[OutwardState.Decoration.Bonus]
-      case 'T' => c.as[OutwardState.Decoration.Text]
-    }
-  )
-
-  def parseStepAddad(string: String): StepAdded = {
-    decode[StepAdded](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
-
-  def parseRoundResult(string: String): RoundResult = {
-    decode[RoundResult](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
-
-  def parseRoundResults(string: String): LiveView.RoundResults = {
-    decode[LiveView.RoundResults](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
-
-  def parseRoundEnded(string: String): RoundEnded = {
-    decode[RoundEnded](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
-
-  def parseRoundStarted(string: String): RoundStarted = {
-    decode[RoundStarted](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
-
-  def parseOutwardState(string: String): OutwardState = {
-    decode[OutwardState](string) match {
-      case Xor.Right(r) => r
-      case Xor.Left(t) => throw t
-    }
-  }
 }

@@ -4,12 +4,10 @@
 package scalatron.main
 
 import akka.actor._
-import com.rbmhtechnology.eventuate.ReplicationEndpoint
-import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
 
 import scalatron.Version
-import scalatron.persistence.{LiveView, StepRecorder}
-import scalatron.persistence.StepRecorder.{StepAdded, AddStep}
+import scalatron.persistence.TickRecorder
+import scalatron.persistence.TickRecorder.AddStep
 import scalatron.scalatron.api.ScalatronOutward
 import scalatron.webServer.WebServer
 import scalatron.webServer.akkahttp.Server
@@ -50,18 +48,13 @@ object Main {
     // prepare the Akka actor system to be used by the various servers of the application
     val actorSystem = ActorSystem("Scalatron")
 
-    val endpoint = ReplicationEndpoint(id => LeveldbEventLog.props(id))(actorSystem)
-    endpoint.activate()
-
-    val stepRecorder = StepRecorder.create(actorSystem, endpoint.id, endpoint.logs(ReplicationEndpoint.DefaultLogName))
+    val stepRecorder = TickRecorder.create(actorSystem)
 
     // start up Scalatron background services (e.g. compile service, which will use the actor system)
     val scalatron = ScalatronOutward(argMap, actorSystem, verbose, state => stepRecorder.injectCommand(AddStep(state)))
     scalatron.start()
 
-    val liveView = actorSystem.actorOf(LiveView.props(endpoint.id, endpoint.logs(ReplicationEndpoint.DefaultLogName)))
-
-    val server = Server.start(liveView)(actorSystem)
+    val server = Server.start()(actorSystem)
 
     // prepare (and start) the web server - eventually this should also use the Akka actorSystem (e.g., Spray?)
     val webServer = WebServer(actorSystem, scalatron, argMap, verbose)

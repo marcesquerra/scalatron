@@ -3,7 +3,7 @@ package scalatron.persistence.serialization
 import scala.collection.immutable.Seq
 import scalatron.core.Simulation.OutwardState
 import scalatron.core.Simulation.OutwardState.Decoration
-import scalatron.persistence.StepRecorder.StepAdded
+import scalatron.persistence.TickRecorder.StepAdded
 import scalatron.serialization.Protobuf._
 
 trait ProtobufDecorations {

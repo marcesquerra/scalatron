@@ -27,8 +27,7 @@ object build extends Build {
     }
   )
 
-  val akkaVersion = "2.4.2"
-  val akkaStreamV = "2.0.2"
+  val akkaVersion = "2.4.3"
   val circeVersion = "0.3.0"
 
   lazy val all = Project(
@@ -68,16 +67,21 @@ object build extends Build {
   lazy val main = Project("Scalatron", file("Scalatron"),
       settings = standardSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "org.scala-lang" % "scala-compiler" % "2.11.7",
-        "com.typesafe.akka"  %% "akka-http-core-experimental"       % akkaStreamV,
-        "com.typesafe.akka"  %% "akka-http-experimental"            % akkaStreamV,
-        "com.typesafe.akka"  %% "akka-http-testkit-experimental"    % akkaStreamV,
+        "org.scala-lang" % "scala-compiler"                         % "2.11.8",
+        "com.typesafe.akka"  %% "akka-http-core"                    % akkaVersion,
+        "com.typesafe.akka"  %% "akka-http-experimental"            % akkaVersion,
+        "com.typesafe.akka"  %% "akka-http-testkit"                 % akkaVersion,
         "com.typesafe.akka"  %% "akka-actor"                        % akkaVersion,
+        "com.typesafe.akka"  %% "akka-persistence"                  % akkaVersion,
+        "com.typesafe.akka"  %% "akka-persistence-query-experimental"% akkaVersion,
+//        "org.iq80.leveldb"    % "leveldb"                           % "0.7",
+        "org.fusesource.leveldbjni"   % "leveldbjni-all"            % "1.8",
+        "com.google.protobuf" % "protobuf-java"                     % "2.5.0",
         "io.circe"           %% "circe-core"                        % circeVersion,
         "io.circe"           %% "circe-generic"                     % circeVersion,
         "io.circe"           %% "circe-jawn"                        % circeVersion,
-        "com.rbmhtechnology" %% "eventuate-core" % "0.6",
-        "com.rbmhtechnology" %% "eventuate-log-leveldb" % "0.6",
+//        "com.rbmhtechnology" %% "eventuate-core" % "0.6",
+//        "com.rbmhtechnology" %% "eventuate-log-leveldb" % "0.6",
         "org.eclipse.jetty.websocket" % "websocket-api" % "9.2.2.v20140723",
         "org.eclipse.jetty.websocket" % "websocket-server" % "9.2.2.v20140723",
         "com.fasterxml.jackson.core" % "jackson-core" % "2.4.1",

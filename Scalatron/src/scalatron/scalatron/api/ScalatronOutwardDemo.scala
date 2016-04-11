@@ -3,6 +3,8 @@
   */
 package scalatron.scalatron.api
 
+import com.typesafe.config.ConfigFactory
+
 import scalatron.core.Scalatron.Constants._
 import java.io.{IOException, File}
 import akka.actor.ActorSystem
@@ -34,7 +36,7 @@ object ScalatronOutwardDemo
             val pluginBaseDirPath = tmpDirPath + "/" + TournamentBotsDirectoryName
 
             // prepare the Akka actor system to be used by the various servers of the application
-            val actorSystem = ActorSystem("Scalatron")
+            val actorSystem = ActorSystem("Scalatron",ConfigFactory.empty())
 
             // create a Scalatron server instance - this is the main API entry point
             val scalatron =

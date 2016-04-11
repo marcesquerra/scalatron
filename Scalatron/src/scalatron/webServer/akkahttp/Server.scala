@@ -1,15 +1,16 @@
 package scalatron.webServer.akkahttp
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.NotUsed
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Flow
+import akka.stream.scaladsl.{Flow, Sink, Source}
 import akka.stream.stage.{Context, PushStage, SyncDirective, TerminationDirective}
 
 import scala.util.{Failure, Success}
+import scalatron.persistence.{LiveView, ReplayView}
 
 object Server {
 
@@ -20,30 +21,21 @@ object Server {
     counter
   }
 
-  def websocketFlow(id: Int, roomView: RoomView): Flow[Message, Message, Unit] = Flow[Message]
+  def websocketFlow(id: Int, roomView: RoomView): Flow[Message, Message, NotUsed] = Flow[Message]
       .collect {
         case TextMessage.Strict(msg) ⇒ msg // unpack incoming WS text messages...
       }
       .via(roomView.viewFlow(id)) // ... and route them through the viewFlow ...
       .map {
-            case msg: RoomView.RoundResult =>
-              TextMessage.Strict(Json.print(msg.result))
-
             case msg: RoomView.RoundResults =>
               TextMessage.Strict(Json.print(msg.results))
-
-            case msg: RoomView.StateMessage =>
-              TextMessage.Strict(Json.print(msg.s)) // ... pack outgoing messages into WS JSON messages ...
-
-            case msg: RoomView.StateMessages =>
-              TextMessage.Strict(Json.print(msg)) // ... pack outgoing messages into WS JSON messages ...
 
             case msg: RoomView.Message =>
               TextMessage.Strict(msg.toString) // ... pack outgoing messages into WS JSON messages ...
       }
     .via(reportErrorsFlow) // ... then log any processing errors on stdin
 
-  def reportErrorsFlow[T]: Flow[T, T, Unit] =
+  def reportErrorsFlow[T]: Flow[T, T, NotUsed] =
     Flow[T]
       .transform(() ⇒ new PushStage[T, T] {
         def onPush(elem: T, ctx: Context[T]): SyncDirective = ctx.push(elem)
@@ -54,19 +46,47 @@ object Server {
         }
       })
 
-  def start(liveView: ActorRef)(implicit system: ActorSystem): RoomView = {
+  def live(implicit system: ActorSystem) = {
+    println("live!!!!!")
+    val src: Source[Message, Any] = LiveView.source.map(outwardState => TextMessage.Strict(Json.print(outwardState)))
+
+    Flow.fromSinkAndSource(Sink.ignore, src).via(reportErrorsFlow)
+  }
+
+  def replay(roundId: String)(implicit system: ActorSystem) = {
+    println("replay!!!!")
+    val src: Source[Message, Any] = ReplayView.source(roundId).map(outwardState => TextMessage.Strict(Json.print(outwardState)))
+
+    Flow.fromSinkAndSource(Sink.ignore, src).via(reportErrorsFlow)
+  }
+
+  def start()(implicit system: ActorSystem): RoomView = {
 
     implicit val materializer = ActorMaterializer()
 
     implicit val ec = system.dispatcher
 
-    val roomView = RoomView.create(system, liveView)
+    val roomView = RoomView.create(system)
 
-    val websocketRoute: Route = path("room") {
-      handleWebsocketMessages(websocketFlow(nextId, roomView))
-    }
+    val wsRoute = path("ws") {
+      handleWebSocketMessages(websocketFlow(nextId, roomView))
+    } ~
+      path("ws" / "live") {
+        handleWebSocketMessages(live)
+      } ~
+      path("ws" / Segment) { roundId =>
+        handleWebSocketMessages(replay(roundId))
+      }
 
-    Http().bindAndHandle(websocketRoute, "0.0.0.0", 8888).onComplete {
+    //    val websocketRoute: Route = path("room") {
+    //      handleWebSocketMessages(websocketFlow(nextId, roomView))
+    //    } ~ path("live") {
+    //      handleWebSocketMessages(live)
+    //    }
+
+    val routes = wsRoute
+
+    Http().bindAndHandle(routes, "0.0.0.0", 8888).onComplete {
       case Success(b) =>
         println(s"Server started")
         sys.addShutdownHook {
@@ -84,4 +104,5 @@ object Server {
     }
     roomView
   }
+
 }

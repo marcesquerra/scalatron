@@ -132,18 +132,10 @@ message StepAddedFormat {
     optional OutwardStateFormat outwardState = 1;
 }
 
-message RoundStartedFormat {
-    optional string roundId = 1;
-    optional int64 dateTime = 2;
-}
-
 message RoundEndedFormat {
     optional string roundId = 1;
     optional int64 dateTime = 2;
     optional bool complete = 3;
-}
-
-message SnapFormat {
 }
 
 message ResultFormat {
@@ -151,13 +143,9 @@ message ResultFormat {
     optional int64 energy = 2;
 }
 
-message RoundResultFormat {
+message RoundResultAddedFormat {
     optional string roundId = 1;
     optional int64 dateTime = 2;
     optional bool complete = 3;
     repeated ResultFormat results = 4;
-}
-
-message RoundResultsFormat {
-    repeated RoundResultFormat roundResults = 1;
 }

@@ -6,17 +6,16 @@ import com.google.protobuf.ExtensionRegistry
 import scala.collection.JavaConversions._
 import scala.collection.immutable._
 import scalatron.core.Simulation.OutwardState
-import scalatron.persistence.LiveView.{RoundResult, RoundResults}
-import scalatron.persistence.StepRecorder.{RoundEnded, RoundStarted, Snap, StepAdded}
+import scalatron.persistence.ResultRecorder.{RoundResultAdded, RoundResults}
+import scalatron.persistence.TickRecorder.{RoundEnded, StepAdded}
 import scalatron.serialization.Protobuf._
 
 class ProtobufSerializer extends Serializer with ProtobufBots with ProtobufDecorations {
 
   val StepAddedClass = classOf[StepAdded]
-  val RoundStartedClass = classOf[RoundStarted]
   val RoundEndedClass = classOf[RoundEnded]
-  val SnapClass = Snap.getClass
-  val RoundResultsClass = classOf[RoundResults]
+  val RoundResultClass = classOf[RoundResultAdded]
+
   val registry = ExtensionRegistry.newInstance()
   registerAllExtensions(registry)
 
@@ -27,20 +26,14 @@ class ProtobufSerializer extends Serializer with ProtobufBots with ProtobufDecor
   override def fromBinary(bytes: Array[Byte], manifest: Option[Class[_]]): AnyRef = manifest match {
     case Some(c) => c match {
       case StepAddedClass => stepAdded(bytes)
-      case RoundStartedClass =>
-        val parsed = RoundStartedFormat.parseFrom(bytes)
-        RoundStarted(parsed.getRoundId, parsed.getDateTime)
       case RoundEndedClass =>
         val parsed = RoundEndedFormat.parseFrom(bytes)
         RoundEnded(parsed.getRoundId, parsed.getDateTime, parsed.getComplete)
-      case SnapClass =>
-        val parsed = SnapFormat.parseFrom(bytes)
-        Snap
-      case RoundResultsClass =>
-        val parsed = RoundResultsFormat.parseFrom(bytes)
-        RoundResults(parsed.getRoundResultsList.map(r => {
-          RoundResult(r.getRoundId, r.getDateTime, r.getComplete, r.getResultsList.map(r1 => (r1.getName, r1.getEnergy)).toVector)
-        }).toVector)
+      case RoundResultClass =>
+        val parsed = RoundResultAddedFormat.parseFrom(bytes)
+        RoundResultAdded(parsed.getRoundId, parsed.getDateTime, parsed.getComplete, parsed.getResultsList
+          .map(r => (r.getName, r.getEnergy)).toVector)
+
       case _ =>
         throw new IllegalArgumentException(s"can't deserialize object of type $c")
     }
@@ -48,22 +41,16 @@ class ProtobufSerializer extends Serializer with ProtobufBots with ProtobufDecor
 
   override def toBinary(o: AnyRef): Array[Byte] = o match {
     case s: StepAdded => stepAdded(s)
-    case r: RoundStarted => RoundStartedFormat.newBuilder()
-      .setRoundId(r.roundId).setDateTime(r.dateTime).build().toByteArray
     case r: RoundEnded => RoundEndedFormat.newBuilder()
       .setRoundId(r.roundId).setDateTime(r.dateTime).setComplete(r.complete).build().toByteArray
-    case Snap => SnapFormat.newBuilder().build().toByteArray
-    case rs: RoundResults =>
+    case rs: RoundResultAdded =>
       val rb = ResultFormat.newBuilder()
-      val b = RoundResultsFormat.newBuilder()
-      b.addAllRoundResults(rs.roundResults.map(r => {
-        RoundResultFormat.newBuilder()
-          .setComplete(r.complete)
-          .setDateTime(r.dateTime)
-          .setRoundId(r.roundId)
-          .addAllResults(r.results.map(x => rb.setName(x._1).setEnergy(x._2).build())).build()
-      })).build().toByteArray
-
+      RoundResultAddedFormat.newBuilder()
+      .setComplete(rs.complete)
+        .setDateTime(rs.dateTime)
+        .setRoundId(rs.roundId)
+        .addAllResults(rs.results.map(x => rb.setName(x._1).setEnergy(x._2).build())).build()
+        .toByteArray
     case _ => throw new IllegalArgumentException(s"can't serialize object of type ${o.getClass}")
   }
 

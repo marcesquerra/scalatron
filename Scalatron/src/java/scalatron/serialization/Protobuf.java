@@ -8920,560 +8920,6 @@ public final class Protobuf {
     // @@protoc_insertion_point(class_scope:StepAddedFormat)
   }
 
-  public interface RoundStartedFormatOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RoundStartedFormat)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    boolean hasRoundId();
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    java.lang.String getRoundId();
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getRoundIdBytes();
-
-    /**
-     * <code>optional int64 dateTime = 2;</code>
-     */
-    boolean hasDateTime();
-    /**
-     * <code>optional int64 dateTime = 2;</code>
-     */
-    long getDateTime();
-  }
-  /**
-   * Protobuf type {@code RoundStartedFormat}
-   */
-  public static final class RoundStartedFormat extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RoundStartedFormat)
-      RoundStartedFormatOrBuilder {
-    // Use RoundStartedFormat.newBuilder() to construct.
-    private RoundStartedFormat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private RoundStartedFormat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final RoundStartedFormat defaultInstance;
-    public static RoundStartedFormat getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public RoundStartedFormat getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private RoundStartedFormat(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              roundId_ = bs;
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              dateTime_ = input.readInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return scalatron.serialization.Protobuf.internal_static_RoundStartedFormat_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return scalatron.serialization.Protobuf.internal_static_RoundStartedFormat_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              scalatron.serialization.Protobuf.RoundStartedFormat.class, scalatron.serialization.Protobuf.RoundStartedFormat.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<RoundStartedFormat> PARSER =
-        new com.google.protobuf.AbstractParser<RoundStartedFormat>() {
-      public RoundStartedFormat parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RoundStartedFormat(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RoundStartedFormat> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int ROUNDID_FIELD_NUMBER = 1;
-    private java.lang.Object roundId_;
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    public boolean hasRoundId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    public java.lang.String getRoundId() {
-      java.lang.Object ref = roundId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roundId_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string roundId = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getRoundIdBytes() {
-      java.lang.Object ref = roundId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roundId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int DATETIME_FIELD_NUMBER = 2;
-    private long dateTime_;
-    /**
-     * <code>optional int64 dateTime = 2;</code>
-     */
-    public boolean hasDateTime() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional int64 dateTime = 2;</code>
-     */
-    public long getDateTime() {
-      return dateTime_;
-    }
-
-    private void initFields() {
-      roundId_ = "";
-      dateTime_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getRoundIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, dateTime_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getRoundIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, dateTime_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundStartedFormat parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(scalatron.serialization.Protobuf.RoundStartedFormat prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code RoundStartedFormat}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RoundStartedFormat)
-        scalatron.serialization.Protobuf.RoundStartedFormatOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return scalatron.serialization.Protobuf.internal_static_RoundStartedFormat_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return scalatron.serialization.Protobuf.internal_static_RoundStartedFormat_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                scalatron.serialization.Protobuf.RoundStartedFormat.class, scalatron.serialization.Protobuf.RoundStartedFormat.Builder.class);
-      }
-
-      // Construct using scalatron.serialization.Protobuf.RoundStartedFormat.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        roundId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        dateTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return scalatron.serialization.Protobuf.internal_static_RoundStartedFormat_descriptor;
-      }
-
-      public scalatron.serialization.Protobuf.RoundStartedFormat getDefaultInstanceForType() {
-        return scalatron.serialization.Protobuf.RoundStartedFormat.getDefaultInstance();
-      }
-
-      public scalatron.serialization.Protobuf.RoundStartedFormat build() {
-        scalatron.serialization.Protobuf.RoundStartedFormat result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public scalatron.serialization.Protobuf.RoundStartedFormat buildPartial() {
-        scalatron.serialization.Protobuf.RoundStartedFormat result = new scalatron.serialization.Protobuf.RoundStartedFormat(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.roundId_ = roundId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.dateTime_ = dateTime_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof scalatron.serialization.Protobuf.RoundStartedFormat) {
-          return mergeFrom((scalatron.serialization.Protobuf.RoundStartedFormat)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(scalatron.serialization.Protobuf.RoundStartedFormat other) {
-        if (other == scalatron.serialization.Protobuf.RoundStartedFormat.getDefaultInstance()) return this;
-        if (other.hasRoundId()) {
-          bitField0_ |= 0x00000001;
-          roundId_ = other.roundId_;
-          onChanged();
-        }
-        if (other.hasDateTime()) {
-          setDateTime(other.getDateTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        scalatron.serialization.Protobuf.RoundStartedFormat parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (scalatron.serialization.Protobuf.RoundStartedFormat) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object roundId_ = "";
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public boolean hasRoundId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public java.lang.String getRoundId() {
-        java.lang.Object ref = roundId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roundId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getRoundIdBytes() {
-        java.lang.Object ref = roundId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roundId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public Builder setRoundId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roundId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public Builder clearRoundId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        roundId_ = getDefaultInstance().getRoundId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string roundId = 1;</code>
-       */
-      public Builder setRoundIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        roundId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long dateTime_ ;
-      /**
-       * <code>optional int64 dateTime = 2;</code>
-       */
-      public boolean hasDateTime() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional int64 dateTime = 2;</code>
-       */
-      public long getDateTime() {
-        return dateTime_;
-      }
-      /**
-       * <code>optional int64 dateTime = 2;</code>
-       */
-      public Builder setDateTime(long value) {
-        bitField0_ |= 0x00000002;
-        dateTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 dateTime = 2;</code>
-       */
-      public Builder clearDateTime() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        dateTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:RoundStartedFormat)
-    }
-
-    static {
-      defaultInstance = new RoundStartedFormat(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:RoundStartedFormat)
-  }
-
   public interface RoundEndedFormatOrBuilder extends
       // @@protoc_insertion_point(interface_extends:RoundEndedFormat)
       com.google.protobuf.MessageOrBuilder {
@@ -10106,319 +9552,6 @@ public final class Protobuf {
     // @@protoc_insertion_point(class_scope:RoundEndedFormat)
   }
 
-  public interface SnapFormatOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:SnapFormat)
-      com.google.protobuf.MessageOrBuilder {
-  }
-  /**
-   * Protobuf type {@code SnapFormat}
-   */
-  public static final class SnapFormat extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:SnapFormat)
-      SnapFormatOrBuilder {
-    // Use SnapFormat.newBuilder() to construct.
-    private SnapFormat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private SnapFormat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final SnapFormat defaultInstance;
-    public static SnapFormat getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public SnapFormat getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SnapFormat(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return scalatron.serialization.Protobuf.internal_static_SnapFormat_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return scalatron.serialization.Protobuf.internal_static_SnapFormat_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              scalatron.serialization.Protobuf.SnapFormat.class, scalatron.serialization.Protobuf.SnapFormat.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<SnapFormat> PARSER =
-        new com.google.protobuf.AbstractParser<SnapFormat>() {
-      public SnapFormat parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SnapFormat(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SnapFormat> getParserForType() {
-      return PARSER;
-    }
-
-    private void initFields() {
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.SnapFormat parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(scalatron.serialization.Protobuf.SnapFormat prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code SnapFormat}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:SnapFormat)
-        scalatron.serialization.Protobuf.SnapFormatOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return scalatron.serialization.Protobuf.internal_static_SnapFormat_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return scalatron.serialization.Protobuf.internal_static_SnapFormat_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                scalatron.serialization.Protobuf.SnapFormat.class, scalatron.serialization.Protobuf.SnapFormat.Builder.class);
-      }
-
-      // Construct using scalatron.serialization.Protobuf.SnapFormat.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return scalatron.serialization.Protobuf.internal_static_SnapFormat_descriptor;
-      }
-
-      public scalatron.serialization.Protobuf.SnapFormat getDefaultInstanceForType() {
-        return scalatron.serialization.Protobuf.SnapFormat.getDefaultInstance();
-      }
-
-      public scalatron.serialization.Protobuf.SnapFormat build() {
-        scalatron.serialization.Protobuf.SnapFormat result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public scalatron.serialization.Protobuf.SnapFormat buildPartial() {
-        scalatron.serialization.Protobuf.SnapFormat result = new scalatron.serialization.Protobuf.SnapFormat(this);
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof scalatron.serialization.Protobuf.SnapFormat) {
-          return mergeFrom((scalatron.serialization.Protobuf.SnapFormat)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(scalatron.serialization.Protobuf.SnapFormat other) {
-        if (other == scalatron.serialization.Protobuf.SnapFormat.getDefaultInstance()) return this;
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        scalatron.serialization.Protobuf.SnapFormat parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (scalatron.serialization.Protobuf.SnapFormat) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:SnapFormat)
-    }
-
-    static {
-      defaultInstance = new SnapFormat(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:SnapFormat)
-  }
-
   public interface ResultFormatOrBuilder extends
       // @@protoc_insertion_point(interface_extends:ResultFormat)
       com.google.protobuf.MessageOrBuilder {
@@ -10973,8 +10106,8 @@ public final class Protobuf {
     // @@protoc_insertion_point(class_scope:ResultFormat)
   }
 
-  public interface RoundResultFormatOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RoundResultFormat)
+  public interface RoundResultAddedFormatOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RoundResultAddedFormat)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -11034,25 +10167,25 @@ public final class Protobuf {
         int index);
   }
   /**
-   * Protobuf type {@code RoundResultFormat}
+   * Protobuf type {@code RoundResultAddedFormat}
    */
-  public static final class RoundResultFormat extends
+  public static final class RoundResultAddedFormat extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RoundResultFormat)
-      RoundResultFormatOrBuilder {
-    // Use RoundResultFormat.newBuilder() to construct.
-    private RoundResultFormat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:RoundResultAddedFormat)
+      RoundResultAddedFormatOrBuilder {
+    // Use RoundResultAddedFormat.newBuilder() to construct.
+    private RoundResultAddedFormat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private RoundResultFormat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private RoundResultAddedFormat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final RoundResultFormat defaultInstance;
-    public static RoundResultFormat getDefaultInstance() {
+    private static final RoundResultAddedFormat defaultInstance;
+    public static RoundResultAddedFormat getDefaultInstance() {
       return defaultInstance;
     }
 
-    public RoundResultFormat getDefaultInstanceForType() {
+    public RoundResultAddedFormat getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -11062,7 +10195,7 @@ public final class Protobuf {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private RoundResultFormat(
+    private RoundResultAddedFormat(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -11126,28 +10259,28 @@ public final class Protobuf {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return scalatron.serialization.Protobuf.internal_static_RoundResultFormat_descriptor;
+      return scalatron.serialization.Protobuf.internal_static_RoundResultAddedFormat_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return scalatron.serialization.Protobuf.internal_static_RoundResultFormat_fieldAccessorTable
+      return scalatron.serialization.Protobuf.internal_static_RoundResultAddedFormat_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              scalatron.serialization.Protobuf.RoundResultFormat.class, scalatron.serialization.Protobuf.RoundResultFormat.Builder.class);
+              scalatron.serialization.Protobuf.RoundResultAddedFormat.class, scalatron.serialization.Protobuf.RoundResultAddedFormat.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<RoundResultFormat> PARSER =
-        new com.google.protobuf.AbstractParser<RoundResultFormat>() {
-      public RoundResultFormat parsePartialFrom(
+    public static com.google.protobuf.Parser<RoundResultAddedFormat> PARSER =
+        new com.google.protobuf.AbstractParser<RoundResultAddedFormat>() {
+      public RoundResultAddedFormat parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RoundResultFormat(input, extensionRegistry);
+        return new RoundResultAddedFormat(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<RoundResultFormat> getParserForType() {
+    public com.google.protobuf.Parser<RoundResultAddedFormat> getParserForType() {
       return PARSER;
     }
 
@@ -11327,53 +10460,53 @@ public final class Protobuf {
       return super.writeReplace();
     }
 
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(byte[] data)
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(java.io.InputStream input)
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseDelimitedFrom(java.io.InputStream input)
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseDelimitedFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static scalatron.serialization.Protobuf.RoundResultFormat parseFrom(
+    public static scalatron.serialization.Protobuf.RoundResultAddedFormat parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -11382,7 +10515,7 @@ public final class Protobuf {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(scalatron.serialization.Protobuf.RoundResultFormat prototype) {
+    public static Builder newBuilder(scalatron.serialization.Protobuf.RoundResultAddedFormat prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -11394,25 +10527,25 @@ public final class Protobuf {
       return builder;
     }
     /**
-     * Protobuf type {@code RoundResultFormat}
+     * Protobuf type {@code RoundResultAddedFormat}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RoundResultFormat)
-        scalatron.serialization.Protobuf.RoundResultFormatOrBuilder {
+        // @@protoc_insertion_point(builder_implements:RoundResultAddedFormat)
+        scalatron.serialization.Protobuf.RoundResultAddedFormatOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultFormat_descriptor;
+        return scalatron.serialization.Protobuf.internal_static_RoundResultAddedFormat_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultFormat_fieldAccessorTable
+        return scalatron.serialization.Protobuf.internal_static_RoundResultAddedFormat_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                scalatron.serialization.Protobuf.RoundResultFormat.class, scalatron.serialization.Protobuf.RoundResultFormat.Builder.class);
+                scalatron.serialization.Protobuf.RoundResultAddedFormat.class, scalatron.serialization.Protobuf.RoundResultAddedFormat.Builder.class);
       }
 
-      // Construct using scalatron.serialization.Protobuf.RoundResultFormat.newBuilder()
+      // Construct using scalatron.serialization.Protobuf.RoundResultAddedFormat.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -11454,23 +10587,23 @@ public final class Protobuf {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultFormat_descriptor;
+        return scalatron.serialization.Protobuf.internal_static_RoundResultAddedFormat_descriptor;
       }
 
-      public scalatron.serialization.Protobuf.RoundResultFormat getDefaultInstanceForType() {
-        return scalatron.serialization.Protobuf.RoundResultFormat.getDefaultInstance();
+      public scalatron.serialization.Protobuf.RoundResultAddedFormat getDefaultInstanceForType() {
+        return scalatron.serialization.Protobuf.RoundResultAddedFormat.getDefaultInstance();
       }
 
-      public scalatron.serialization.Protobuf.RoundResultFormat build() {
-        scalatron.serialization.Protobuf.RoundResultFormat result = buildPartial();
+      public scalatron.serialization.Protobuf.RoundResultAddedFormat build() {
+        scalatron.serialization.Protobuf.RoundResultAddedFormat result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public scalatron.serialization.Protobuf.RoundResultFormat buildPartial() {
-        scalatron.serialization.Protobuf.RoundResultFormat result = new scalatron.serialization.Protobuf.RoundResultFormat(this);
+      public scalatron.serialization.Protobuf.RoundResultAddedFormat buildPartial() {
+        scalatron.serialization.Protobuf.RoundResultAddedFormat result = new scalatron.serialization.Protobuf.RoundResultAddedFormat(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -11500,16 +10633,16 @@ public final class Protobuf {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof scalatron.serialization.Protobuf.RoundResultFormat) {
-          return mergeFrom((scalatron.serialization.Protobuf.RoundResultFormat)other);
+        if (other instanceof scalatron.serialization.Protobuf.RoundResultAddedFormat) {
+          return mergeFrom((scalatron.serialization.Protobuf.RoundResultAddedFormat)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(scalatron.serialization.Protobuf.RoundResultFormat other) {
-        if (other == scalatron.serialization.Protobuf.RoundResultFormat.getDefaultInstance()) return this;
+      public Builder mergeFrom(scalatron.serialization.Protobuf.RoundResultAddedFormat other) {
+        if (other == scalatron.serialization.Protobuf.RoundResultAddedFormat.getDefaultInstance()) return this;
         if (other.hasRoundId()) {
           bitField0_ |= 0x00000001;
           roundId_ = other.roundId_;
@@ -11559,11 +10692,11 @@ public final class Protobuf {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        scalatron.serialization.Protobuf.RoundResultFormat parsedMessage = null;
+        scalatron.serialization.Protobuf.RoundResultAddedFormat parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (scalatron.serialization.Protobuf.RoundResultFormat) e.getUnfinishedMessage();
+          parsedMessage = (scalatron.serialization.Protobuf.RoundResultAddedFormat) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -11954,691 +11087,15 @@ public final class Protobuf {
         return resultsBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:RoundResultFormat)
+      // @@protoc_insertion_point(builder_scope:RoundResultAddedFormat)
     }
 
     static {
-      defaultInstance = new RoundResultFormat(true);
+      defaultInstance = new RoundResultAddedFormat(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:RoundResultFormat)
-  }
-
-  public interface RoundResultsFormatOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RoundResultsFormat)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    java.util.List<scalatron.serialization.Protobuf.RoundResultFormat> 
-        getRoundResultsList();
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    scalatron.serialization.Protobuf.RoundResultFormat getRoundResults(int index);
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    int getRoundResultsCount();
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    java.util.List<? extends scalatron.serialization.Protobuf.RoundResultFormatOrBuilder> 
-        getRoundResultsOrBuilderList();
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    scalatron.serialization.Protobuf.RoundResultFormatOrBuilder getRoundResultsOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code RoundResultsFormat}
-   */
-  public static final class RoundResultsFormat extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RoundResultsFormat)
-      RoundResultsFormatOrBuilder {
-    // Use RoundResultsFormat.newBuilder() to construct.
-    private RoundResultsFormat(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private RoundResultsFormat(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final RoundResultsFormat defaultInstance;
-    public static RoundResultsFormat getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public RoundResultsFormat getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private RoundResultsFormat(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                roundResults_ = new java.util.ArrayList<scalatron.serialization.Protobuf.RoundResultFormat>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              roundResults_.add(input.readMessage(scalatron.serialization.Protobuf.RoundResultFormat.PARSER, extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          roundResults_ = java.util.Collections.unmodifiableList(roundResults_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return scalatron.serialization.Protobuf.internal_static_RoundResultsFormat_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return scalatron.serialization.Protobuf.internal_static_RoundResultsFormat_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              scalatron.serialization.Protobuf.RoundResultsFormat.class, scalatron.serialization.Protobuf.RoundResultsFormat.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<RoundResultsFormat> PARSER =
-        new com.google.protobuf.AbstractParser<RoundResultsFormat>() {
-      public RoundResultsFormat parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RoundResultsFormat(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RoundResultsFormat> getParserForType() {
-      return PARSER;
-    }
-
-    public static final int ROUNDRESULTS_FIELD_NUMBER = 1;
-    private java.util.List<scalatron.serialization.Protobuf.RoundResultFormat> roundResults_;
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    public java.util.List<scalatron.serialization.Protobuf.RoundResultFormat> getRoundResultsList() {
-      return roundResults_;
-    }
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    public java.util.List<? extends scalatron.serialization.Protobuf.RoundResultFormatOrBuilder> 
-        getRoundResultsOrBuilderList() {
-      return roundResults_;
-    }
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    public int getRoundResultsCount() {
-      return roundResults_.size();
-    }
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    public scalatron.serialization.Protobuf.RoundResultFormat getRoundResults(int index) {
-      return roundResults_.get(index);
-    }
-    /**
-     * <code>repeated .RoundResultFormat roundResults = 1;</code>
-     */
-    public scalatron.serialization.Protobuf.RoundResultFormatOrBuilder getRoundResultsOrBuilder(
-        int index) {
-      return roundResults_.get(index);
-    }
-
-    private void initFields() {
-      roundResults_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      for (int i = 0; i < roundResults_.size(); i++) {
-        output.writeMessage(1, roundResults_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < roundResults_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, roundResults_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static scalatron.serialization.Protobuf.RoundResultsFormat parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(scalatron.serialization.Protobuf.RoundResultsFormat prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code RoundResultsFormat}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RoundResultsFormat)
-        scalatron.serialization.Protobuf.RoundResultsFormatOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultsFormat_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultsFormat_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                scalatron.serialization.Protobuf.RoundResultsFormat.class, scalatron.serialization.Protobuf.RoundResultsFormat.Builder.class);
-      }
-
-      // Construct using scalatron.serialization.Protobuf.RoundResultsFormat.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getRoundResultsFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (roundResultsBuilder_ == null) {
-          roundResults_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          roundResultsBuilder_.clear();
-        }
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return scalatron.serialization.Protobuf.internal_static_RoundResultsFormat_descriptor;
-      }
-
-      public scalatron.serialization.Protobuf.RoundResultsFormat getDefaultInstanceForType() {
-        return scalatron.serialization.Protobuf.RoundResultsFormat.getDefaultInstance();
-      }
-
-      public scalatron.serialization.Protobuf.RoundResultsFormat build() {
-        scalatron.serialization.Protobuf.RoundResultsFormat result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public scalatron.serialization.Protobuf.RoundResultsFormat buildPartial() {
-        scalatron.serialization.Protobuf.RoundResultsFormat result = new scalatron.serialization.Protobuf.RoundResultsFormat(this);
-        int from_bitField0_ = bitField0_;
-        if (roundResultsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            roundResults_ = java.util.Collections.unmodifiableList(roundResults_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.roundResults_ = roundResults_;
-        } else {
-          result.roundResults_ = roundResultsBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof scalatron.serialization.Protobuf.RoundResultsFormat) {
-          return mergeFrom((scalatron.serialization.Protobuf.RoundResultsFormat)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(scalatron.serialization.Protobuf.RoundResultsFormat other) {
-        if (other == scalatron.serialization.Protobuf.RoundResultsFormat.getDefaultInstance()) return this;
-        if (roundResultsBuilder_ == null) {
-          if (!other.roundResults_.isEmpty()) {
-            if (roundResults_.isEmpty()) {
-              roundResults_ = other.roundResults_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureRoundResultsIsMutable();
-              roundResults_.addAll(other.roundResults_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.roundResults_.isEmpty()) {
-            if (roundResultsBuilder_.isEmpty()) {
-              roundResultsBuilder_.dispose();
-              roundResultsBuilder_ = null;
-              roundResults_ = other.roundResults_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              roundResultsBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getRoundResultsFieldBuilder() : null;
-            } else {
-              roundResultsBuilder_.addAllMessages(other.roundResults_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        scalatron.serialization.Protobuf.RoundResultsFormat parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (scalatron.serialization.Protobuf.RoundResultsFormat) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.util.List<scalatron.serialization.Protobuf.RoundResultFormat> roundResults_ =
-        java.util.Collections.emptyList();
-      private void ensureRoundResultsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          roundResults_ = new java.util.ArrayList<scalatron.serialization.Protobuf.RoundResultFormat>(roundResults_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          scalatron.serialization.Protobuf.RoundResultFormat, scalatron.serialization.Protobuf.RoundResultFormat.Builder, scalatron.serialization.Protobuf.RoundResultFormatOrBuilder> roundResultsBuilder_;
-
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public java.util.List<scalatron.serialization.Protobuf.RoundResultFormat> getRoundResultsList() {
-        if (roundResultsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(roundResults_);
-        } else {
-          return roundResultsBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public int getRoundResultsCount() {
-        if (roundResultsBuilder_ == null) {
-          return roundResults_.size();
-        } else {
-          return roundResultsBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public scalatron.serialization.Protobuf.RoundResultFormat getRoundResults(int index) {
-        if (roundResultsBuilder_ == null) {
-          return roundResults_.get(index);
-        } else {
-          return roundResultsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder setRoundResults(
-          int index, scalatron.serialization.Protobuf.RoundResultFormat value) {
-        if (roundResultsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureRoundResultsIsMutable();
-          roundResults_.set(index, value);
-          onChanged();
-        } else {
-          roundResultsBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder setRoundResults(
-          int index, scalatron.serialization.Protobuf.RoundResultFormat.Builder builderForValue) {
-        if (roundResultsBuilder_ == null) {
-          ensureRoundResultsIsMutable();
-          roundResults_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          roundResultsBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder addRoundResults(scalatron.serialization.Protobuf.RoundResultFormat value) {
-        if (roundResultsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureRoundResultsIsMutable();
-          roundResults_.add(value);
-          onChanged();
-        } else {
-          roundResultsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder addRoundResults(
-          int index, scalatron.serialization.Protobuf.RoundResultFormat value) {
-        if (roundResultsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureRoundResultsIsMutable();
-          roundResults_.add(index, value);
-          onChanged();
-        } else {
-          roundResultsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder addRoundResults(
-          scalatron.serialization.Protobuf.RoundResultFormat.Builder builderForValue) {
-        if (roundResultsBuilder_ == null) {
-          ensureRoundResultsIsMutable();
-          roundResults_.add(builderForValue.build());
-          onChanged();
-        } else {
-          roundResultsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder addRoundResults(
-          int index, scalatron.serialization.Protobuf.RoundResultFormat.Builder builderForValue) {
-        if (roundResultsBuilder_ == null) {
-          ensureRoundResultsIsMutable();
-          roundResults_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          roundResultsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder addAllRoundResults(
-          java.lang.Iterable<? extends scalatron.serialization.Protobuf.RoundResultFormat> values) {
-        if (roundResultsBuilder_ == null) {
-          ensureRoundResultsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, roundResults_);
-          onChanged();
-        } else {
-          roundResultsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder clearRoundResults() {
-        if (roundResultsBuilder_ == null) {
-          roundResults_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          roundResultsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public Builder removeRoundResults(int index) {
-        if (roundResultsBuilder_ == null) {
-          ensureRoundResultsIsMutable();
-          roundResults_.remove(index);
-          onChanged();
-        } else {
-          roundResultsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public scalatron.serialization.Protobuf.RoundResultFormat.Builder getRoundResultsBuilder(
-          int index) {
-        return getRoundResultsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public scalatron.serialization.Protobuf.RoundResultFormatOrBuilder getRoundResultsOrBuilder(
-          int index) {
-        if (roundResultsBuilder_ == null) {
-          return roundResults_.get(index);  } else {
-          return roundResultsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public java.util.List<? extends scalatron.serialization.Protobuf.RoundResultFormatOrBuilder> 
-           getRoundResultsOrBuilderList() {
-        if (roundResultsBuilder_ != null) {
-          return roundResultsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(roundResults_);
-        }
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public scalatron.serialization.Protobuf.RoundResultFormat.Builder addRoundResultsBuilder() {
-        return getRoundResultsFieldBuilder().addBuilder(
-            scalatron.serialization.Protobuf.RoundResultFormat.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public scalatron.serialization.Protobuf.RoundResultFormat.Builder addRoundResultsBuilder(
-          int index) {
-        return getRoundResultsFieldBuilder().addBuilder(
-            index, scalatron.serialization.Protobuf.RoundResultFormat.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .RoundResultFormat roundResults = 1;</code>
-       */
-      public java.util.List<scalatron.serialization.Protobuf.RoundResultFormat.Builder> 
-           getRoundResultsBuilderList() {
-        return getRoundResultsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          scalatron.serialization.Protobuf.RoundResultFormat, scalatron.serialization.Protobuf.RoundResultFormat.Builder, scalatron.serialization.Protobuf.RoundResultFormatOrBuilder> 
-          getRoundResultsFieldBuilder() {
-        if (roundResultsBuilder_ == null) {
-          roundResultsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              scalatron.serialization.Protobuf.RoundResultFormat, scalatron.serialization.Protobuf.RoundResultFormat.Builder, scalatron.serialization.Protobuf.RoundResultFormatOrBuilder>(
-                  roundResults_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          roundResults_ = null;
-        }
-        return roundResultsBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:RoundResultsFormat)
-    }
-
-    static {
-      defaultInstance = new RoundResultsFormat(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:RoundResultsFormat)
+    // @@protoc_insertion_point(class_scope:RoundResultAddedFormat)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -12727,35 +11184,20 @@ public final class Protobuf {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_StepAddedFormat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RoundStartedFormat_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RoundStartedFormat_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RoundEndedFormat_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RoundEndedFormat_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_SnapFormat_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_SnapFormat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ResultFormat_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ResultFormat_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RoundResultFormat_descriptor;
+    internal_static_RoundResultAddedFormat_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RoundResultFormat_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RoundResultsFormat_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RoundResultsFormat_fieldAccessorTable;
+      internal_static_RoundResultAddedFormat_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -12804,16 +11246,13 @@ public final class Protobuf {
       "\004 \003(\0132\n.BotFormat\022&\n\013decorations\030\005 \003(\0132\021" +
       ".DecorationFormat\"<\n\017StepAddedFormat\022)\n\014" +
       "outwardState\030\001 \001(\0132\023.OutwardStateFormat\"" +
-      "7\n\022RoundStartedFormat\022\017\n\007roundId\030\001 \001(\t\022\020",
-      "\n\010dateTime\030\002 \001(\003\"G\n\020RoundEndedFormat\022\017\n\007" +
-      "roundId\030\001 \001(\t\022\020\n\010dateTime\030\002 \001(\003\022\020\n\010compl" +
-      "ete\030\003 \001(\010\"\014\n\nSnapFormat\",\n\014ResultFormat\022" +
-      "\014\n\004name\030\001 \001(\t\022\016\n\006energy\030\002 \001(\003\"h\n\021RoundRe" +
-      "sultFormat\022\017\n\007roundId\030\001 \001(\t\022\020\n\010dateTime\030" +
-      "\002 \001(\003\022\020\n\010complete\030\003 \001(\010\022\036\n\007results\030\004 \003(\013" +
-      "2\r.ResultFormat\">\n\022RoundResultsFormat\022(\n" +
-      "\014roundResults\030\001 \003(\0132\022.RoundResultFormatB" +
-      "\033\n\027scalatron.serializationH\001"
+      "G\n\020RoundEndedFormat\022\017\n\007roundId\030\001 \001(\t\022\020\n\010",
+      "dateTime\030\002 \001(\003\022\020\n\010complete\030\003 \001(\010\",\n\014Resu" +
+      "ltFormat\022\014\n\004name\030\001 \001(\t\022\016\n\006energy\030\002 \001(\003\"m" +
+      "\n\026RoundResultAddedFormat\022\017\n\007roundId\030\001 \001(" +
+      "\t\022\020\n\010dateTime\030\002 \001(\003\022\020\n\010complete\030\003 \001(\010\022\036\n" +
+      "\007results\030\004 \003(\0132\r.ResultFormatB\033\n\027scalatr" +
+      "on.serializationH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12929,42 +11368,24 @@ public final class Protobuf {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_StepAddedFormat_descriptor,
         new java.lang.String[] { "OutwardState", });
-    internal_static_RoundStartedFormat_descriptor =
-      getDescriptor().getMessageTypes().get(17);
-    internal_static_RoundStartedFormat_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RoundStartedFormat_descriptor,
-        new java.lang.String[] { "RoundId", "DateTime", });
     internal_static_RoundEndedFormat_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_RoundEndedFormat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RoundEndedFormat_descriptor,
         new java.lang.String[] { "RoundId", "DateTime", "Complete", });
-    internal_static_SnapFormat_descriptor =
-      getDescriptor().getMessageTypes().get(19);
-    internal_static_SnapFormat_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_SnapFormat_descriptor,
-        new java.lang.String[] { });
     internal_static_ResultFormat_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_ResultFormat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ResultFormat_descriptor,
         new java.lang.String[] { "Name", "Energy", });
-    internal_static_RoundResultFormat_descriptor =
-      getDescriptor().getMessageTypes().get(21);
-    internal_static_RoundResultFormat_fieldAccessorTable = new
+    internal_static_RoundResultAddedFormat_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_RoundResultAddedFormat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RoundResultFormat_descriptor,
+        internal_static_RoundResultAddedFormat_descriptor,
         new java.lang.String[] { "RoundId", "DateTime", "Complete", "Results", });
-    internal_static_RoundResultsFormat_descriptor =
-      getDescriptor().getMessageTypes().get(22);
-    internal_static_RoundResultsFormat_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RoundResultsFormat_descriptor,
-        new java.lang.String[] { "RoundResults", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
