@@ -32,6 +32,10 @@ object TickRecorder {
 
   case class EndRound(complete: Boolean) extends Command
 
+  case object GetRoundId extends Command
+
+  case class PresentRoundId(roundId: Option[String])
+
   sealed trait Event
 
   case class StepAdded(outwardState: OutwardState) extends Event
@@ -56,12 +60,22 @@ private class TickRecorderManager(resultRecorder: ActorRef) extends Actor {
 
   import TickRecorder._
 
+  context.system.eventStream.subscribe(self, GetRoundId.getClass)
+
   var tickRecorder: ActorRef = context.actorOf(Props(new TickRecorderActor(uuid, resultRecorder)))
   var roundCompleted = true
+  var presentRoundId: Option[String] = None
 
-  def uuid = UUID.randomUUID().toString.replace("-", "")
+  def uuid = {
+    val id = UUID.randomUUID().toString.replace("-", "")
+    presentRoundId = Some(id)
+    context.system.eventStream.publish(PresentRoundId(presentRoundId))
+    id
+  }
 
   override def receive: Actor.Receive = {
+    case GetRoundId =>
+      context.system.eventStream.publish(PresentRoundId(presentRoundId))
     case cmd: AddStep =>
       val completed = cmd.outwardState.time == cmd.outwardState.rounds
       if (completed) {
@@ -93,8 +107,8 @@ private class TickRecorderActor(override val persistenceId: String, resultRecord
 
     case c: AddStep =>
       persist(StepAdded(c.outwardState)) { evt =>
-        println("recorder: " + persistenceId + " " + c)
-        println()
+        //        println("recorder: " + persistenceId + " " + c)
+        //        println()
         lastTick = Some(evt.outwardState)
       }
     case c@EndRound(completed) =>
@@ -163,21 +177,44 @@ private class ResultRecorder() extends PersistentActor {
   }
 }
 
-object LiveView {
+class LiveView(system: ActorSystem) {
 
-  def source(implicit system: ActorSystem): Source[OutwardState, NotUsed] = {
+  private var presentRoundId: Option[String] = None
+
+  private val it = Iterator.continually(presentRoundId.get)
+
+  system.actorOf(Props(new Actor {
+    system.eventStream.subscribe(self, classOf[TickRecorder.PresentRoundId])
+    system.eventStream.publish(TickRecorder.GetRoundId)
+
+    override def receive: Actor.Receive = {
+      case evt: TickRecorder.PresentRoundId => presentRoundId = evt.roundId
+    }
+  }))
+
+  def source: Source[OutwardState, NotUsed] = {
     val queries = PersistenceQuery(system).readJournalFor[LeveldbReadJournal](LeveldbReadJournal.Identifier)
-    queries.allPersistenceIds().flatMapConcat(persistentId => queries.eventsByPersistenceId(persistentId))
-      .collect { case e@EventEnvelope(offset, persistentId, sequenceNr, event: TickRecorder.StepAdded) => event.outwardState }.buffer(5000, OverflowStrategy.fail)
+
+    Source.fromIterator(() => Iterator.continually(presentRoundId.get))
+      .flatMapConcat(pid => queries.eventsByPersistenceId(pid)
+        .takeWhile {
+          case EventEnvelope(_, _, _, event: TickRecorder.StepAdded) => true
+          case _ => false
+        })
+      .collect { case e@EventEnvelope(offset, pid, sequenceNr, event: TickRecorder.StepAdded) => event.outwardState }
+      .buffer(1, OverflowStrategy.backpressure)
   }
-//  private def queries(implicit system: ActorSystem) = PersistenceQuery(system).readJournalFor[LeveldbReadJournal](LeveldbReadJournal.Identifier)
 }
 
 object ReplayView {
 
   def source(roundId: String)(implicit system: ActorSystem): Source[OutwardState, NotUsed] = {
     val queries = PersistenceQuery(system).readJournalFor[LeveldbReadJournal](LeveldbReadJournal.Identifier)
+
     queries.eventsByPersistenceId(roundId)
-      .collect { case EventEnvelope(offset, persistentId, sequenceNr, event: TickRecorder.StepAdded) => event.outwardState }
+      .collect { case e@EventEnvelope(offset, _, sequenceNr, event: TickRecorder.Event) => event }
+      .takeWhile(!_.isInstanceOf[TickRecorder.RoundEnded])
+      .collect { case evt: TickRecorder.StepAdded => evt.outwardState }
+      .buffer(1, OverflowStrategy.backpressure)
   }
 }

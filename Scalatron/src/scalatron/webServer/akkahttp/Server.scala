@@ -46,16 +46,20 @@ object Server {
         }
       })
 
-  def live(implicit system: ActorSystem) = {
+  def live(liveView: LiveView)(implicit system: ActorSystem) = {
     println("live!!!!!")
-    val src: Source[Message, Any] = LiveView.source.map(outwardState => TextMessage.Strict(Json.print(outwardState)))
+    val src: Source[Message, Any] = liveView.source.map { outwardState =>
+      TextMessage.Strict(Json.print(outwardState))
+    }
 
     Flow.fromSinkAndSource(Sink.ignore, src).via(reportErrorsFlow)
   }
 
   def replay(roundId: String)(implicit system: ActorSystem) = {
     println("replay!!!!")
-    val src: Source[Message, Any] = ReplayView.source(roundId).map(outwardState => TextMessage.Strict(Json.print(outwardState)))
+    val src: Source[Message, Any] = ReplayView.source(roundId).map { outwardState =>
+      TextMessage.Strict(Json.print(outwardState))
+    }
 
     Flow.fromSinkAndSource(Sink.ignore, src).via(reportErrorsFlow)
   }
@@ -68,11 +72,13 @@ object Server {
 
     val roomView = RoomView.create(system)
 
+    val liveView = new LiveView(system)
+
     val wsRoute = path("ws") {
       handleWebSocketMessages(websocketFlow(nextId, roomView))
     } ~
       path("ws" / "live") {
-        handleWebSocketMessages(live)
+        handleWebSocketMessages(live(liveView))
       } ~
       path("ws" / Segment) { roundId =>
         handleWebSocketMessages(replay(roundId))

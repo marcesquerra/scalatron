@@ -7,7 +7,7 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.collection.immutable._
 import scalatron.core.Simulation.OutwardState
-import scalatron.persistence.{ResultRecorder, LiveView}
+import scalatron.persistence.{TickRecorder, ResultRecorder, LiveView}
 
 object RoomView {
 
@@ -30,7 +30,9 @@ object RoomView {
   def create(system: ActorSystem): RoomView = {
     val roomActor = system.actorOf(Props(new Actor {
       system.eventStream.subscribe(self, classOf[ResultRecorder.RoundResults])
-      var subscribers = Set.empty[(Int, ActorRef)]
+
+      private var subscribers = Set.empty[(Int, ActorRef)]
+
       def receive: Receive = {
         case r: ResultRecorder.RoundResults =>
           dispatch(RoundResults(r.roundResults))
