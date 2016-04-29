@@ -58,7 +58,7 @@ trait ProtobufBots {
           .build()
       case b: SlavePlayer =>
         val slavePlayer = SlavePlayerFormat.newBuilder()
-          .setMId(b.mId).build()
+          .setId(b.id).setMId(b.mId).build()
         BotFormat.newBuilder()
           .setType(BotFormat.Type.SlavePlayer)
           .setX(b.x).setY(b.y)
@@ -98,7 +98,7 @@ trait ProtobufBots {
           OutwardState.Bot.Occluded(b.getX, b.getY)
         case BotFormat.Type.SlavePlayer =>
           val x = b.getExtension(SlavePlayerFormat.extension)
-          OutwardState.Bot.SlavePlayer(b.getX, b.getY, x.getMId)
+          OutwardState.Bot.SlavePlayer(b.getX, b.getY, x.getId, x.getMId)
         case BotFormat.Type.Wall =>
           val x = b.getExtension(WallFormat.extension)
           val xy = OutwardState.XY(x.getE.getX, x.getE.getY)

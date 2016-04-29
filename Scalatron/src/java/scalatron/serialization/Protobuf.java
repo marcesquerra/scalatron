@@ -4265,11 +4265,20 @@ public final class Protobuf {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int64 mId = 1;</code>
+     * <code>optional int64 id = 1;</code>
+     */
+    boolean hasId();
+    /**
+     * <code>optional int64 id = 1;</code>
+     */
+    long getId();
+
+    /**
+     * <code>optional int64 mId = 2;</code>
      */
     boolean hasMId();
     /**
-     * <code>optional int64 mId = 1;</code>
+     * <code>optional int64 mId = 2;</code>
      */
     long getMId();
   }
@@ -4327,6 +4336,11 @@ public final class Protobuf {
             }
             case 8: {
               bitField0_ |= 0x00000001;
+              id_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
               mId_ = input.readInt64();
               break;
             }
@@ -4370,22 +4384,38 @@ public final class Protobuf {
     }
 
     private int bitField0_;
-    public static final int MID_FIELD_NUMBER = 1;
-    private long mId_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private long id_;
     /**
-     * <code>optional int64 mId = 1;</code>
+     * <code>optional int64 id = 1;</code>
      */
-    public boolean hasMId() {
+    public boolean hasId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int64 mId = 1;</code>
+     * <code>optional int64 id = 1;</code>
+     */
+    public long getId() {
+      return id_;
+    }
+
+    public static final int MID_FIELD_NUMBER = 2;
+    private long mId_;
+    /**
+     * <code>optional int64 mId = 2;</code>
+     */
+    public boolean hasMId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int64 mId = 2;</code>
      */
     public long getMId() {
       return mId_;
     }
 
     private void initFields() {
+      id_ = 0L;
       mId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
@@ -4402,7 +4432,10 @@ public final class Protobuf {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, mId_);
+        output.writeInt64(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, mId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -4415,7 +4448,11 @@ public final class Protobuf {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, mId_);
+          .computeInt64Size(1, id_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, mId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4534,8 +4571,10 @@ public final class Protobuf {
 
       public Builder clear() {
         super.clear();
-        mId_ = 0L;
+        id_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
+        mId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -4567,6 +4606,10 @@ public final class Protobuf {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
         result.mId_ = mId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -4584,6 +4627,9 @@ public final class Protobuf {
 
       public Builder mergeFrom(scalatron.serialization.Protobuf.SlavePlayerFormat other) {
         if (other == scalatron.serialization.Protobuf.SlavePlayerFormat.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
         if (other.hasMId()) {
           setMId(other.getMId());
         }
@@ -4614,33 +4660,65 @@ public final class Protobuf {
       }
       private int bitField0_;
 
-      private long mId_ ;
+      private long id_ ;
       /**
-       * <code>optional int64 mId = 1;</code>
+       * <code>optional int64 id = 1;</code>
        */
-      public boolean hasMId() {
+      public boolean hasId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int64 mId = 1;</code>
+       * <code>optional int64 id = 1;</code>
+       */
+      public long getId() {
+        return id_;
+      }
+      /**
+       * <code>optional int64 id = 1;</code>
+       */
+      public Builder setId(long value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 id = 1;</code>
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long mId_ ;
+      /**
+       * <code>optional int64 mId = 2;</code>
+       */
+      public boolean hasMId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int64 mId = 2;</code>
        */
       public long getMId() {
         return mId_;
       }
       /**
-       * <code>optional int64 mId = 1;</code>
+       * <code>optional int64 mId = 2;</code>
        */
       public Builder setMId(long value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         mId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 mId = 1;</code>
+       * <code>optional int64 mId = 2;</code>
        */
       public Builder clearMId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         mId_ = 0L;
         onChanged();
         return this;
@@ -12785,35 +12863,35 @@ public final class Protobuf {
       " \001(\0132\013.WallFormat\"z\n\022MasterPlayerFormat\022" +
       "\n\n\002id\030\001 \001(\003\022\013\n\003cpu\030\002 \001(\003\022\014\n\004name\030\003 \001(\t\022\t" +
       "\n\001e\030\004 \001(\00322\n\textension\022\n.BotFormat\030j \001(\013",
-      "2\023.MasterPlayerFormat\"S\n\021SlavePlayerForm" +
-      "at\022\013\n\003mId\030\001 \001(\00321\n\textension\022\n.BotFormat" +
-      "\030k \001(\0132\022.SlavePlayerFormat\"\216\001\n\020Decoratio" +
-      "nFormat\022$\n\004type\030\001 \002(\0162\026.DecorationFormat" +
-      ".Type\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\"4\n\004Type\022\r\n\tE" +
-      "xplosion\020\001\022\010\n\004Bonk\020\002\022\t\n\005Bonus\020\003\022\010\n\004Text\020" +
-      "\004*\010\010d\020\200\200\200\200\002\"T\n\017ExplosionFormat\022\t\n\001r\030\001 \001(" +
-      "\00526\n\textension\022\021.DecorationFormat\030d \001(\0132" +
-      "\020.ExplosionFormat\"?\n\nBonkFormat21\n\texten" +
-      "sion\022\021.DecorationFormat\030e \001(\0132\013.BonkForm",
-      "at\"L\n\013BonusFormat\022\t\n\001e\030\001 \001(\00322\n\textensio" +
-      "n\022\021.DecorationFormat\030f \001(\0132\014.BonusFormat" +
-      "\"M\n\nTextFormat\022\014\n\004text\030\001 \001(\t21\n\textensio" +
-      "n\022\021.DecorationFormat\030g \001(\0132\013.TextFormat\"" +
-      "\207\001\n\022OutwardStateFormat\022\016\n\006rounds\030\001 \001(\005\022\021" +
-      "\n\004size\030\002 \001(\0132\003.XY\022\014\n\004time\030\003 \001(\005\022\030\n\004bots\030" +
-      "\004 \003(\0132\n.BotFormat\022&\n\013decorations\030\005 \003(\0132\021" +
-      ".DecorationFormat\"<\n\017StepAddedFormat\022)\n\014" +
-      "outwardState\030\001 \001(\0132\023.OutwardStateFormat\"" +
-      "7\n\022RoundStartedFormat\022\017\n\007roundId\030\001 \001(\t\022\020",
-      "\n\010dateTime\030\002 \001(\003\"G\n\020RoundEndedFormat\022\017\n\007" +
-      "roundId\030\001 \001(\t\022\020\n\010dateTime\030\002 \001(\003\022\020\n\010compl" +
-      "ete\030\003 \001(\010\"\014\n\nSnapFormat\",\n\014ResultFormat\022" +
-      "\014\n\004name\030\001 \001(\t\022\016\n\006energy\030\002 \001(\003\"h\n\021RoundRe" +
-      "sultFormat\022\017\n\007roundId\030\001 \001(\t\022\020\n\010dateTime\030" +
-      "\002 \001(\003\022\020\n\010complete\030\003 \001(\010\022\036\n\007results\030\004 \003(\013" +
-      "2\r.ResultFormat\">\n\022RoundResultsFormat\022(\n" +
-      "\014roundResults\030\001 \003(\0132\022.RoundResultFormatB" +
-      "\033\n\027scalatron.serializationH\001"
+      "2\023.MasterPlayerFormat\"_\n\021SlavePlayerForm" +
+      "at\022\n\n\002id\030\001 \001(\003\022\013\n\003mId\030\002 \001(\00321\n\textension" +
+      "\022\n.BotFormat\030k \001(\0132\022.SlavePlayerFormat\"\216" +
+      "\001\n\020DecorationFormat\022$\n\004type\030\001 \002(\0162\026.Deco" +
+      "rationFormat.Type\022\t\n\001x\030\002 \001(\005\022\t\n\001y\030\003 \001(\005\"" +
+      "4\n\004Type\022\r\n\tExplosion\020\001\022\010\n\004Bonk\020\002\022\t\n\005Bonu" +
+      "s\020\003\022\010\n\004Text\020\004*\010\010d\020\200\200\200\200\002\"T\n\017ExplosionForm" +
+      "at\022\t\n\001r\030\001 \001(\00526\n\textension\022\021.DecorationF" +
+      "ormat\030d \001(\0132\020.ExplosionFormat\"?\n\nBonkFor" +
+      "mat21\n\textension\022\021.DecorationFormat\030e \001(",
+      "\0132\013.BonkFormat\"L\n\013BonusFormat\022\t\n\001e\030\001 \001(\003" +
+      "22\n\textension\022\021.DecorationFormat\030f \001(\0132\014" +
+      ".BonusFormat\"M\n\nTextFormat\022\014\n\004text\030\001 \001(\t" +
+      "21\n\textension\022\021.DecorationFormat\030g \001(\0132\013" +
+      ".TextFormat\"\207\001\n\022OutwardStateFormat\022\016\n\006ro" +
+      "unds\030\001 \001(\005\022\021\n\004size\030\002 \001(\0132\003.XY\022\014\n\004time\030\003 " +
+      "\001(\005\022\030\n\004bots\030\004 \003(\0132\n.BotFormat\022&\n\013decorat" +
+      "ions\030\005 \003(\0132\021.DecorationFormat\"<\n\017StepAdd" +
+      "edFormat\022)\n\014outwardState\030\001 \001(\0132\023.Outward" +
+      "StateFormat\"7\n\022RoundStartedFormat\022\017\n\007rou",
+      "ndId\030\001 \001(\t\022\020\n\010dateTime\030\002 \001(\003\"G\n\020RoundEnd" +
+      "edFormat\022\017\n\007roundId\030\001 \001(\t\022\020\n\010dateTime\030\002 " +
+      "\001(\003\022\020\n\010complete\030\003 \001(\010\"\014\n\nSnapFormat\",\n\014R" +
+      "esultFormat\022\014\n\004name\030\001 \001(\t\022\016\n\006energy\030\002 \001(" +
+      "\003\"h\n\021RoundResultFormat\022\017\n\007roundId\030\001 \001(\t\022" +
+      "\020\n\010dateTime\030\002 \001(\003\022\020\n\010complete\030\003 \001(\010\022\036\n\007r" +
+      "esults\030\004 \003(\0132\r.ResultFormat\">\n\022RoundResu" +
+      "ltsFormat\022(\n\014roundResults\030\001 \003(\0132\022.RoundR" +
+      "esultFormatB\033\n\027scalatron.serializationH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12886,7 +12964,7 @@ public final class Protobuf {
     internal_static_SlavePlayerFormat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_SlavePlayerFormat_descriptor,
-        new java.lang.String[] { "MId", });
+        new java.lang.String[] { "Id", "MId", });
     internal_static_DecorationFormat_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_DecorationFormat_fieldAccessorTable = new

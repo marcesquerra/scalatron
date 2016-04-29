@@ -77,7 +77,8 @@ message SlavePlayerFormat {
     extend BotFormat {
         optional SlavePlayerFormat extension = 107;
     }
-    optional int64 mId = 1;
+    optional int64 id = 1;
+    optional int64 mId = 2;
 }
 
 message DecorationFormat {
