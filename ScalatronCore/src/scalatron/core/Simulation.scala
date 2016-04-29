@@ -80,7 +80,7 @@ object Simulation {
 
       case class MasterPlayer(x: Int, y: Int, id: Long, cpu: Long, name: String, e: Long, t: Char = 'M') extends Bot
 
-      case class SlavePlayer(x: Int, y: Int, mId: Long, t: Char = 'S') extends Bot
+      case class SlavePlayer(x: Int, y: Int, id: Long, mId: Long, t: Char = 'S') extends Bot
 
     }
 
